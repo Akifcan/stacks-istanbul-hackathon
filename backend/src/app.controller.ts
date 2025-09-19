@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-  @Get()
-  async demo() {
-    return "ok"
+
+  @Get('create-account')
+  async createAccount() {
+    return this.appService.createAccount()
   }
 
 }

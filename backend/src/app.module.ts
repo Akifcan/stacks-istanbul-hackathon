@@ -4,11 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { JwtModule } from '@nestjs/jwt'
-import { DatabaseConfig, JWTConfig } from './config/config.types';
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { Wallet } from './entities/wallet.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Wallet]),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
