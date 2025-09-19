@@ -9,13 +9,18 @@ export class AppController {
   @Inject() appService: AppService
 
   @Get('create-account')
-  async createAccount() {
+  createAccount() {
     return this.appService.createAccount()
   }
 
   @Post('save-card')
-  async saveCard(@CurrentWallet() currentWallet: string, @Body() newCardDto: NewCardDto){
+  saveCard(@CurrentWallet() currentWallet: string, @Body() newCardDto: NewCardDto){
     return this.appService.saveCard(currentWallet, newCardDto)
+  }
+
+  @Get('my-wallet')
+  myWalelt(@CurrentWallet() currentWallet: string){
+    return this.appService.myWallet(currentWallet)
   }
 
 }

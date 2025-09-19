@@ -7,9 +7,12 @@ import { JwtModule } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Wallet } from './entities/wallet.entity';
 import { Card } from './entities/card.entity';
+import {HttpModule} from '@nestjs/axios'
+import { CurrencyService } from './currency.service';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([Wallet, Card]),
     ConfigModule.forRoot({
       load: [configuration],
@@ -46,6 +49,7 @@ import { Card } from './entities/card.entity';
 
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CurrencyService],
+  exports: [CurrencyService]
 })
 export class AppModule { }

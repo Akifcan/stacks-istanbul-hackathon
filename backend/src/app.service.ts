@@ -18,10 +18,15 @@ import {
 import { STACKS_TESTNET } from '@stacks/network';
 import { Card } from './entities/card.entity';
 import { NewCardDto } from './dtos/new-card.dto';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
+import { CurrencyService } from './currency.service';
 
 @Injectable()
 export class AppService {
   @Inject() configService: ConfigService
+  @Inject() httpService: HttpService
+  @Inject() currencyService: CurrencyService
 
   @InjectRepository(Wallet) walletRepository: Repository<Wallet>
   @InjectRepository(Card) cardRepository: Repository<Card>
@@ -61,13 +66,11 @@ export class AppService {
     const savedWallet = await this.walletRepository.save(this.walletRepository.create({
       address: wallet.keyInfo.address
     }))
-    return {address: savedWallet.address, mnemonic: wallet.mnemonic}
-    
-    // return contract
+    return { address: savedWallet.address, mnemonic: wallet.mnemonic }
   }
 
-  async saveCard(currentWallet: string, newCardDto: NewCardDto){
-    const wallet = await this.walletRepository.findOneOrFail({where: {address: currentWallet}})
+  async saveCard(currentWallet: string, newCardDto: NewCardDto) {
+    const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
 
     const contract = await this.deployContract()
 
@@ -80,6 +83,21 @@ export class AppService {
 
     return {
       contract: contract.txid
+    }
+  }
+
+  async myWallet(address: string) {
+    const response = await lastValueFrom(this.httpService.get(`https://api.testnet.hiro.so/extended/v1/address/${'ST27F68XK7TGCZKC4R11DHQ73HDEVE4QGT719YV01'}/balances`))
+    const currency = await this.currencyService.getSTXinUSD()
+
+    const balance = response.data.stx.balance / 1_000_000
+    const usd = balance * currency
+
+    return {
+      balance, usd: new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(usd)
     }
   }
 
