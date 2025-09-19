@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import CreateWallet from './src/views/create-wallet';
 import Mnemonic from './src/views/mnemonic';
 import SaveCreditCard from './src/views/save-credit-card';
+import CreditCards from './src/views/credit-cards';
+import Settings from './src/views/settings';
 import Splash from './src/views/splash';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -20,7 +22,7 @@ function App() {
           initialRouteName="Splash"
           screenOptions={{
             headerShown: false,
-            ...TransitionPresets.ScaleFromCenterAndroid,
+            ...TransitionPresets.RevealFromBottomAndroid,
           }}
         >
           <RootStack.Screen
@@ -42,6 +44,20 @@ function App() {
           <RootStack.Screen
             name="SaveCreditCard"
             component={SaveCreditCard}
+          />
+          <RootStack.Screen
+            name="CreditCards"
+            component={CreditCards}
+            options={{
+              ...TransitionPresets.ModalPresentationIOS
+            }}
+          />
+          <RootStack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              ...TransitionPresets.ModalPresentationIOS
+            }}
           />
           <RootStack.Screen
             name="Splash"

@@ -1,11 +1,15 @@
 import { FC } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { TEXT_COLOR } from '../../theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigation } from '../../route';
 import Symbol4 from '../../../assets/icons/symbol4.svg';
 import Wallet from '../../../assets/icons/wallet.svg';
 import Settings from '../../../assets/icons/settings.svg';
 
 const Header: FC = () => {
+    const navigation = useNavigation<StackNavigation>();
+
     return (
         <View style={styles.header}>
             <View style={styles.headerLeft}>
@@ -15,10 +19,16 @@ const Header: FC = () => {
                 <Text style={styles.welcomeText}>Account</Text>
             </View>
             <View style={styles.headerRight}>
-                <TouchableOpacity style={styles.headerButton}>
+                <TouchableOpacity
+                    style={styles.headerButton}
+                    onPress={() => navigation.navigate('CreditCards')}
+                >
                     <Text style={styles.headerButtonText}><Wallet width={30} height={30} /></Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.headerButton}>
+                <TouchableOpacity
+                    style={styles.headerButton}
+                    onPress={() => navigation.navigate('Settings')}
+                >
                     <Text style={styles.headerButtonText}><Settings width={17} height={17} /></Text>
                 </TouchableOpacity>
             </View>

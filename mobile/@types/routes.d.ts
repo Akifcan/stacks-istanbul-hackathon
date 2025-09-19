@@ -4,5 +4,7 @@ type RootStackParamList = {
     CreateWallet: undefined
     Mnemonic: undefined
     SaveCreditCard: undefined
+    CreditCards: undefined
+    Settings: undefined
     Splash: undefined
 };

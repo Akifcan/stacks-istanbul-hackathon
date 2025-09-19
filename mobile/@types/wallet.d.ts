@@ -1,4 +1,4 @@
 interface WalletProps {
-    address: string
-    mnemonic: string
+    balance: string
+    usd: string
 }

@@ -1,9 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FC, useState } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StackNavigation } from "../route";
 import { BLACK } from "../theme/colors";
 import Symbol3 from '../../assets/icons/symbol3.svg'
 import Header from '../components/home/Header';
@@ -17,7 +15,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 type TabType = 'portfolio' | 'purchases' | 'spending';
 
 const Home: FC<Props> = () => {
-    const navigation = useNavigation<StackNavigation>()
     const [activeTab, setActiveTab] = useState<TabType>('portfolio');
 
     const renderTabContent = () => {
