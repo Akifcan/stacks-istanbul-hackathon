@@ -17,7 +17,10 @@ export class Card {
         startsWith: string
 
         @Column({unique: true})
-        contract: string
+        contractTx: string
+
+        @Column({unique: true})
+        contractName: string
 
         @Column({name: 'spend_amount', default: 0})
         spendAmount: number

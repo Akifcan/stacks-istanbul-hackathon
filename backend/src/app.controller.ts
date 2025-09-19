@@ -33,4 +33,14 @@ export class AppController {
     return this.appService.mockSpend(cardId)
   }
 
+  @Get('invests')
+  invests(@CurrentWallet() currentWallet: string){
+    return this.appService.invests(currentWallet)
+  }
+
+  @Get('invests/:cardId')
+  investsByCardId(@Param('cardId') cardId: string){
+    return this.appService.investsByCardId(cardId)
+  }
+
 }

@@ -23,6 +23,7 @@ import { lastValueFrom } from 'rxjs';
 import { CurrencyService } from './currency.service';
 import CARD_TRANSACTION from './mock/card-transaction';
 import { Transaction } from './entities/transaction.entity';
+import { Invest } from './entities/invest.entity';
 
 @Injectable()
 export class AppService {
@@ -33,6 +34,7 @@ export class AppService {
   @InjectRepository(Wallet) walletRepository: Repository<Wallet>
   @InjectRepository(Card) cardRepository: Repository<Card>
   @InjectRepository(Transaction) transactionRepository: Repository<Transaction>
+  @InjectRepository(Invest) investRepository: Repository<Invest>
 
   private generateWallet(): Promise<NewWallet> {
     return new Promise((resolve) => {
@@ -48,11 +50,14 @@ export class AppService {
     const path = join(__dirname, '../', '../', 'contract', 'StackLit.clar')
     const codeBody = readFileSync(path, 'utf-8');
 
+    const contractName = `StackLit-${nanoid(10)}`
+
     const transaction = await makeContractDeploy({
-      contractName: `StackLit-${nanoid(10)}`,
+      contractName,
       codeBody: codeBody,
       senderKey: config?.privateKey!,
-      network: STACKS_TESTNET
+      network: STACKS_TESTNET,
+      fee: 3000n
     });
 
     const response = await broadcastTransaction({
@@ -60,8 +65,7 @@ export class AppService {
       network: STACKS_TESTNET
     });
 
-
-    return response
+    return { contractName, ...response }
   }
 
   async createAccount() {
@@ -76,18 +80,21 @@ export class AppService {
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
 
     const contract = await this.deployContract()
+    const cardId = nanoid(5)
 
     await this.cardRepository.save(this.cardRepository.create({
       startsWith: newCardDto.cardNumber.substring(0, 4),
       buyAmount: newCardDto.buyAmount,
       orderLimit: newCardDto.minOrderLimit,
-      cardId: nanoid(5),
+      cardId,
       wallet: wallet,
-      contract: contract.txid,
+      contractTx: contract.txid,
+      contractName: contract.contractName
     }))
 
     return {
-      contract: contract.txid
+      contract: contract.txid,
+      cardId
     }
   }
 
@@ -120,8 +127,6 @@ export class AppService {
       relations: ['wallet']
     })
 
-    console.log(currentCard)
-
     console.log('CURRENT AMOUNT: ' + currentCard.spendAmount)
     console.log('INVEST LIMIT: ' + currentCard.orderLimit)
     console.log('BUY AMOUNT:' + currentCard.buyAmount)
@@ -139,10 +144,31 @@ export class AppService {
         config?.privateKey!,
       network: 'testnet',
     });
-
     const tx = await broadcastTransaction({ transaction, network: "testnet" })
-    await this.cardRepository.update({id: currentCard.id}, {spendAmount: 0})
+    const transaction2 = await makeContractCall({
+      contractAddress: config!.address,
+      contractName: currentCard.contractName,
+      functionName: 'add-invest',
+      functionArgs: [
+        Cl.uint(currentCard.buyAmount),  // amount
+        Cl.uint(currentCard.spendAmount),    // spend
+        Cl.uint(currentCard.spendAmount)   // current-value
+      ],
+      senderKey: config!.privateKey,
+      network: 'testnet'
+    });
+    const tx2 = await broadcastTransaction({ transaction: transaction2, network: 'testnet' });
+
+    await this.investRepository.save(this.investRepository.create({
+      spent: currentCard.spendAmount,
+      bougth: currentCard.buyAmount,
+      transaction: tx.txid,
+      wallet: { id: currentCard.wallet.id }
+    }))
+    await this.cardRepository.update({ id: currentCard.id }, { spendAmount: 0 })
+
     console.log(tx)
+    console.log(tx2)
   }
 
   async mockSpend(cardId: string) {
@@ -175,6 +201,38 @@ export class AppService {
     this.invest(cardId)
 
     return { spend: true }
+  }
+
+  async invests(currentWallet: string) {
+
+    const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
+    return await this.investRepository.find({ order: { createdAt: 'DESC' }, where: { wallet: { id: wallet.id } } })
+  }
+
+  async investsByCardId(cardId: string) {
+
+    const config = this.configService.get<ContractConfig>('contract')
+    const card = await this.cardRepository.findOneOrFail({ relations: ['wallet'], where: { cardId } })
+
+    const result = await fetchCallReadOnlyFunction({
+      contractAddress: config!.address,
+      contractName: card.contractName,
+      functionName: 'get-invests-range',
+      functionArgs: [
+        Cl.uint(0),   // start
+        Cl.uint(10)   // end
+      ],
+      network: STACKS_TESTNET,
+      senderAddress: card.wallet.address
+    });
+
+    const serialized = JSON.stringify(result, (_, value) =>
+      typeof value === 'bigint' ? value.toString() : value
+    );
+
+
+    return JSON.parse(serialized)
+
   }
 
 }

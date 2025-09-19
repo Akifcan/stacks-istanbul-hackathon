@@ -13,6 +13,7 @@ export default () => ({
     port: process.env.APP_PORT,
   },
   contract: {
-    privateKey: process.env.MASTER_WALLET_PRIVATE_KEY
+    privateKey: process.env.MASTER_WALLET_PRIVATE_KEY,
+    address: process.env.MASTER_WALLET_ADDRESS
   }
 })

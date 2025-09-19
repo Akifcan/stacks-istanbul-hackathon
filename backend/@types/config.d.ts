@@ -16,4 +16,5 @@ interface AppConfig {
 
 interface ContractConfig {
   privateKey: string
+  address: string
 }
