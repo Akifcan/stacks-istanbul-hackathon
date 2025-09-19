@@ -1,4 +1,4 @@
-interface NewWalletProps {
+interface WalletProps {
     address: string
     mnemonic: string
 }
