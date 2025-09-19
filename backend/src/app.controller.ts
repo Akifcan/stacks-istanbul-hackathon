@@ -28,4 +28,9 @@ export class AppController {
     return this.appService.savedCards(currentWallet)
   }
 
+  @Post('mock-spend')
+  mockSpend(@Body('cardId') cardId: string){
+    return this.appService.mockSpend(cardId)
+  }
+
 }

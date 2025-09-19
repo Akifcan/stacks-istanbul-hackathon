@@ -9,11 +9,12 @@ import { Wallet } from './entities/wallet.entity';
 import { Card } from './entities/card.entity';
 import {HttpModule} from '@nestjs/axios'
 import { CurrencyService } from './currency.service';
+import { Transaction } from './entities/transaction.entity';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([Wallet, Card]),
+    TypeOrmModule.forFeature([Wallet, Card, Transaction]),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

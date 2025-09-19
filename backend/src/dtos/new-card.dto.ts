@@ -33,4 +33,8 @@ export class NewCardDto {
   @IsNotEmpty()
   @IsNumber()
   minOrderLimit: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  buyAmount: number
 }

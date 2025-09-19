@@ -21,6 +21,8 @@ import { NewCardDto } from './dtos/new-card.dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { CurrencyService } from './currency.service';
+import CARD_TRANSACTION from './mock/card-transaction';
+import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
 export class AppService {
@@ -30,10 +32,11 @@ export class AppService {
 
   @InjectRepository(Wallet) walletRepository: Repository<Wallet>
   @InjectRepository(Card) cardRepository: Repository<Card>
+  @InjectRepository(Transaction) transactionRepository: Repository<Transaction>
 
   private generateWallet(): Promise<NewWallet> {
     return new Promise((resolve) => {
-      exec("npx stx make_keychain", (error, stdout) => {
+      exec("npx stx make_keychain -t", (error, stdout) => {
         const result = JSON.parse(stdout)
         resolve(result)
       })
@@ -75,11 +78,12 @@ export class AppService {
     const contract = await this.deployContract()
 
     await this.cardRepository.save(this.cardRepository.create({
-      cardId: nanoid(5),
-      orderLimit: newCardDto.minOrderLimit,
-      wallet: wallet,
       startsWith: newCardDto.cardNumber.substring(0, 4),
-      contract: contract.txid
+      buyAmount: newCardDto.buyAmount,
+      orderLimit: newCardDto.minOrderLimit,
+      cardId: nanoid(5),
+      wallet: wallet,
+      contract: contract.txid,
     }))
 
     return {
@@ -102,9 +106,75 @@ export class AppService {
     }
   }
 
-  async savedCards(currentWallet: string){
+  async savedCards(currentWallet: string) {
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
-    return this.cardRepository.find({where: {wallet: {id: wallet.id}}})
+    return this.cardRepository.find({ where: { wallet: { id: wallet.id } } })
+  }
+
+  private async invest(cardId: string) {
+
+    const config = this.configService.get<ContractConfig>('contract')
+
+    const currentCard = await this.cardRepository.findOneOrFail({
+      where: { cardId },
+      relations: ['wallet']
+    })
+
+    console.log(currentCard)
+
+    console.log('CURRENT AMOUNT: ' + currentCard.spendAmount)
+    console.log('INVEST LIMIT: ' + currentCard.orderLimit)
+    console.log('BUY AMOUNT:' + currentCard.buyAmount)
+
+    if (currentCard.spendAmount < currentCard.orderLimit) {
+      return console.log('NO INVESTMENT YET!')
+    }
+
+    const microStx = BigInt(Math.floor(Number(currentCard.buyAmount) * 1_000_000))
+
+    const transaction = await makeSTXTokenTransfer({
+      recipient: currentCard.wallet.address,
+      amount: microStx,
+      senderKey:
+        config?.privateKey!,
+      network: 'testnet',
+    });
+
+    const tx = await broadcastTransaction({ transaction, network: "testnet" })
+    await this.cardRepository.update({id: currentCard.id}, {spendAmount: 0})
+    console.log(tx)
+  }
+
+  async mockSpend(cardId: string) {
+    const randomIndex = Math.floor(Math.random() * CARD_TRANSACTION.length);
+    const card = await this.cardRepository.findOneOrFail({
+      where: { cardId },
+      relations: ['wallet']
+    })
+
+    const transaction = CARD_TRANSACTION[randomIndex]
+
+    const currentSpendAmount = card.spendAmount
+    const newAmount = currentSpendAmount + transaction.amount
+    await this.cardRepository.update({ id: card.id }, { spendAmount: newAmount })
+
+    await this.transactionRepository.save(this.transactionRepository.create({
+      transactionId: transaction.id,
+      date: transaction.date,
+      description: transaction.description,
+      merchantName: transaction.merchant_name,
+      amount: transaction.amount,
+      currency: transaction.currency,
+      category: transaction.category,
+      type: transaction.type,
+      status: transaction.status,
+      card: { id: card.id },
+      wallet: { id: card.wallet.id }
+    }))
+
+    this.invest(cardId)
+
+    return { spend: true }
   }
 
 }

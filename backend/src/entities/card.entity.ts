@@ -19,6 +19,12 @@ export class Card {
         @Column({unique: true})
         contract: string
 
+        @Column({name: 'spend_amount', default: 0})
+        spendAmount: number
+
+        @Column({name: 'buy_amount'})
+        buyAmount: number
+
         @ManyToOne(() => Wallet, wallet => wallet.id, {onDelete: 'CASCADE'})
         @JoinColumn({name: 'wallet_id'})
         wallet: Wallet
