@@ -1,10 +1,11 @@
+import { FC, useEffect } from "react"
 import { StyleSheet, Text } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { BLACK } from "../theme/colors"
-import { FC, useEffect } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { WALLET_KEY } from "../config/constants"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import api from "../config/api"
 
 const styles = StyleSheet.create({
     container: {
@@ -24,6 +25,7 @@ const Splash:FC<Props> = ({navigation}) => {
             return navigation.replace('Greet')
         }
 
+        api.defaults.headers['wallet'] = currentWallet
         return navigation.replace('Home')
     }
 
