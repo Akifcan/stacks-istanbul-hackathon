@@ -1,41 +1,30 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FC, useState, useEffect } from "react";
 import { Text, TouchableOpacity, View, StyleSheet, ScrollView, Alert } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StackNavigation } from "../route";
 import { BLACK, BLOOD_ORANGE, TEXT_COLOR, BITCOIN_ORANGE } from "../theme/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MNEMONIC_KEY, MNEMONIC_REVEAL_KEY } from "../config/constants";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Mnemonic'>;
 
-// Sample mnemonic word list (in a real app, you'd use BIP39 wordlist)
-const MNEMONIC_WORDS = [
-    'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse',
-    'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act',
-    'action', 'actor', 'actress', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit',
-    'adult', 'advance', 'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'agent', 'agree',
-    'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album', 'alcohol', 'alert', 'alien',
-    'all', 'alley', 'allow', 'almost', 'alone', 'alpha', 'already', 'also', 'alter', 'always',
-    'amateur', 'amazing', 'among', 'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger', 'angle',
-    'angry', 'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique', 'anxiety',
-    'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april', 'arcade', 'arch', 'arctic',
-    'area', 'arena', 'argue', 'arm', 'armed', 'armor', 'army', 'around', 'arrange', 'arrest',
-    'arrive', 'arrow', 'art', 'article', 'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset',
-    'assist', 'assume', 'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction'
-];
-
-const generateMnemonic = (): string[] => {
-    const shuffled = [...MNEMONIC_WORDS].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 12);
-};
-
-const Mnemonic: FC<Props> = () => {
-    const navigation = useNavigation<StackNavigation>()
+const Mnemonic: FC<Props> = ({navigation}) => {
     const [mnemonicWords, setMnemonicWords] = useState<string[]>([]);
     const [isRevealed, setIsRevealed] = useState(false);
 
+    const handleMnemoic = async () => {
+        const key = await AsyncStorage.getItem(MNEMONIC_KEY)
+
+        if(!key){
+            return navigation.replace('CreateWallet')
+        }
+
+        const words = key.split(' ')
+        setMnemonicWords(words);
+    }
+
     useEffect(() => {
-        setMnemonicWords(generateMnemonic());
+        handleMnemoic()
     }, []);
 
     const handleRevealPhrase = () => {
@@ -52,7 +41,8 @@ const Mnemonic: FC<Props> = () => {
             Alert.alert("Security Warning", "Please reveal and save your recovery phrase first");
             return;
         }
-        navigation.navigate('SaveCreditCard');
+        AsyncStorage.setItem(MNEMONIC_REVEAL_KEY, 'true')
+        navigation.replace('SaveCreditCard');
     };
 
     return (

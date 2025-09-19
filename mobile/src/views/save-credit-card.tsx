@@ -5,17 +5,21 @@ import { Text, TouchableOpacity, View, StyleSheet, ScrollView, TextInput, Alert 
 import { SafeAreaView } from "react-native-safe-area-context"
 import { StackNavigation } from "../route";
 import { BLACK, BLOOD_ORANGE, TEXT_COLOR, BITCOIN_ORANGE } from "../theme/colors";
+import { useMutation } from "@tanstack/react-query";
+import api from "../config/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { WALLET_KEY } from "../config/constants";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SaveCreditCard'>;
 
 const SaveCreditCard: FC<Props> = () => {
     const navigation = useNavigation<StackNavigation>()
-    const [cardNumber, setCardNumber] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [cvv, setCvv] = useState('');
-    const [cardholderName, setCardholderName] = useState('');
-    const [spendingLimit, setSpendingLimit] = useState('100');
-    const [investmentAmount, setInvestmentAmount] = useState('5');
+    const [cardNumber, setCardNumber] = useState('5526080000000002');
+    const [expiryDate, setExpiryDate] = useState('10/27');
+    const [cvv, setCvv] = useState('020');
+    const [cardholderName, setCardholderName] = useState('AKİFCAN KARA');
+    const [spendingLimit, setSpendingLimit] = useState('500');
+    const [investmentAmount, setInvestmentAmount] = useState('2');
     const [selectedCrypto, setSelectedCrypto] = useState<'STX' | 'BTC'>('STX');
 
     const handleCardNumberChange = (text: string) => {
@@ -34,13 +38,46 @@ const SaveCreditCard: FC<Props> = () => {
         }
     };
 
+    const saveCardMutation = useMutation({
+        mutationFn: async (cardData: any) => {
+            const wallet = await AsyncStorage.getItem(WALLET_KEY);
+            const response = await api.post('/save-card', cardData, {
+                headers: {
+                    'wallet': wallet
+                }
+            });
+            return response.data;
+        },
+        onSuccess: (data) => {
+            Alert.alert("Success", "Credit card saved successfully!");
+            navigation.navigate('Home');
+        },
+        onError: (error) => {
+            Alert.alert("Error", "Failed to save credit card. Please try again.");
+            console.error('Save card error:', error);
+        }
+    });
+
     const handleSaveCard = () => {
         if (!cardNumber || !expiryDate || !cvv || !cardholderName) {
             Alert.alert("Error", "Please fill in all card details");
             return;
         }
-        Alert.alert("Success", "Credit card saved successfully!");
-        navigation.navigate('Home');
+
+        const [month, year] = expiryDate.split('/');
+        const cleanCardNumber = cardNumber.replace(/\s/g, '');
+
+        const cardData = {
+            cardNumber: cleanCardNumber,
+            cardholderName: cardholderName,
+            expiryMonth: month,
+            expiryYear: year,
+            cvv: cvv,
+            minOrderLimit: parseInt(spendingLimit),
+            buyAmount: parseInt(investmentAmount)
+        };
+
+        saveCardMutation.mutate(cardData);
     };
 
     return (
@@ -193,10 +230,13 @@ const SaveCreditCard: FC<Props> = () => {
                 {/* Save Button */}
                 <View style={styles.actionsSection}>
                     <TouchableOpacity
-                        style={styles.saveButton}
+                        style={[styles.saveButton, saveCardMutation.isPending && { opacity: 0.7 }]}
                         onPress={handleSaveCard}
+                        disabled={saveCardMutation.isPending}
                     >
-                        <Text style={styles.saveButtonText}>Save Card & Settings</Text>
+                        <Text style={styles.saveButtonText}>
+                            {saveCardMutation.isPending ? 'Saving...' : 'Save Card & Settings'}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

@@ -1,17 +1,32 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Text, TouchableOpacity, View, StyleSheet, Dimensions } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StackNavigation } from "../route";
 import { BLACK, BLOOD_ORANGE, TEXT_COLOR } from "../theme/colors";
 import SymbolIcon from '../../assets/icons/symbol.svg'
 import Symbol2Icon from '../../assets/icons/symbol2.svg'
+import api from "../config/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MNEMONIC_KEY, WALLET_KEY } from "../config/constants";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateWallet'>;
 
-const CreateWallet: FC<Props> = () => {
-    const navigation = useNavigation<StackNavigation>()
+const CreateWallet: FC<Props> = ({navigation}) => {
+    const [isLoading, setLoading] = useState(false)
+
+    const handleCreateWallet = async () => {
+        try {
+            setLoading(true)
+            const response = await api.get<NewWalletProps>('/create-account')
+            AsyncStorage.setItem(WALLET_KEY, response.data.address)
+            AsyncStorage.setItem(MNEMONIC_KEY, response.data.mnemonic)
+            navigation.replace('Mnemonic')
+        } catch(e){
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -37,8 +52,9 @@ const CreateWallet: FC<Props> = () => {
 
                 <View style={styles.centerContainer}>
                     <TouchableOpacity
+                        disabled={isLoading}
                         style={styles.createNewButton}
-                        onPress={() => navigation.navigate('Mnemonic')}
+                        onPress={handleCreateWallet}
                         activeOpacity={0.8}
                     >
                         <View style={styles.plusContainer}>

@@ -3,7 +3,7 @@ import { StyleSheet, Text } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { BLACK } from "../theme/colors"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { WALLET_KEY } from "../config/constants"
+import { MNEMONIC_REVEAL_KEY, WALLET_KEY } from "../config/constants"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import api from "../config/api"
 
@@ -25,7 +25,20 @@ const Splash:FC<Props> = ({navigation}) => {
             return navigation.replace('Greet')
         }
 
+        const mnemoicReveal = await AsyncStorage.getItem(MNEMONIC_REVEAL_KEY)
+
+        if(!mnemoicReveal) {
+            return navigation.replace('Mnemonic')
+        }
+
         api.defaults.headers['wallet'] = currentWallet
+
+        const savedCards = await api.get<CardProps[]>('/saved-cards')
+
+        if(!savedCards.data.length){
+            return navigation.replace('SaveCreditCard')
+        }
+
         return navigation.replace('Home')
     }
 

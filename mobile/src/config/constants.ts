@@ -1,4 +1,5 @@
 export const WALLET_KEY = 'WALLET'
 export const MNEMONIC_KEY = 'MNEMONIC'
+export const MNEMONIC_REVEAL_KEY = 'MNEMONIC_REVEAL'
 
-export const API_URL = 'http://localhost:3010'
+export const API_URL = 'http://192.168.1.49:3010'
