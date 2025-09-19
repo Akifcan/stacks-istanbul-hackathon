@@ -23,4 +23,9 @@ export class AppController {
     return this.appService.myWallet(currentWallet)
   }
 
+  @Get('saved-cards')
+  savedCards(@CurrentWallet() currentWallet: string){
+    return this.appService.savedCards(currentWallet)
+  }
+
 }

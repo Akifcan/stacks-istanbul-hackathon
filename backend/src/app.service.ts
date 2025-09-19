@@ -78,7 +78,8 @@ export class AppService {
       cardId: nanoid(5),
       orderLimit: newCardDto.minOrderLimit,
       wallet: wallet,
-      startsWith: newCardDto.cardNumber.substring(0, 4)
+      startsWith: newCardDto.cardNumber.substring(0, 4),
+      contract: contract.txid
     }))
 
     return {
@@ -87,7 +88,7 @@ export class AppService {
   }
 
   async myWallet(address: string) {
-    const response = await lastValueFrom(this.httpService.get(`https://api.testnet.hiro.so/extended/v1/address/${'ST27F68XK7TGCZKC4R11DHQ73HDEVE4QGT719YV01'}/balances`))
+    const response = await lastValueFrom(this.httpService.get(`https://api.testnet.hiro.so/extended/v1/address/${address}/balances`))
     const currency = await this.currencyService.getSTXinUSD()
 
     const balance = response.data.stx.balance / 1_000_000
@@ -99,6 +100,11 @@ export class AppService {
         currency: "USD",
       }).format(usd)
     }
+  }
+
+  async savedCards(currentWallet: string){
+    const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
+    return this.cardRepository.find({where: {wallet: {id: wallet.id}}})
   }
 
 }
