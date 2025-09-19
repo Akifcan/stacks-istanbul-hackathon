@@ -17,6 +17,7 @@ import {
 } from "@stacks/transactions";
 import { STACKS_TESTNET } from '@stacks/network';
 import { Card } from './entities/card.entity';
+import { NewCardDto } from './dtos/new-card.dto';
 
 @Injectable()
 export class AppService {
@@ -61,8 +62,25 @@ export class AppService {
       address: wallet.keyInfo.address
     }))
     return {address: savedWallet.address, mnemonic: wallet.mnemonic}
-    // const contract = await this.deployContract()
+    
     // return contract
+  }
+
+  async saveCard(currentWallet: string, newCardDto: NewCardDto){
+    const wallet = await this.walletRepository.findOneOrFail({where: {address: currentWallet}})
+
+    const contract = await this.deployContract()
+
+    await this.cardRepository.save(this.cardRepository.create({
+      cardId: nanoid(5),
+      orderLimit: newCardDto.minOrderLimit,
+      wallet: wallet,
+      startsWith: newCardDto.cardNumber.substring(0, 4)
+    }))
+
+    return {
+      contract: contract.txid
+    }
   }
 
 }

@@ -8,7 +8,16 @@ export class Card {
         id: number
 
         @Column({unique: true, name: 'card_id'})
-        cardId: number
+        cardId: string
+
+        @Column({name: 'order_limit'})
+        orderLimit: number
+        
+        @Column({name: 'starts_with'})
+        startsWith: string
+
+        @Column({unique: true})
+        contract: string
 
         @ManyToOne(() => Wallet, wallet => wallet.id, {onDelete: 'CASCADE'})
         @JoinColumn({name: 'wallet_id'})
