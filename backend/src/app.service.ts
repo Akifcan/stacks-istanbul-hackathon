@@ -16,12 +16,14 @@ import {
   Cl
 } from "@stacks/transactions";
 import { STACKS_TESTNET } from '@stacks/network';
+import { Card } from './entities/card.entity';
 
 @Injectable()
 export class AppService {
+  @Inject() configService: ConfigService
 
   @InjectRepository(Wallet) walletRepository: Repository<Wallet>
-  @Inject() configService: ConfigService
+  @InjectRepository(Card) cardRepository: Repository<Card>
 
   private generateWallet(): Promise<NewWallet> {
     return new Promise((resolve) => {
@@ -54,9 +56,11 @@ export class AppService {
   }
 
   async createAccount() {
-    // const wallet = await this.generateWallet()
-    // return wallet
-
+    const wallet = await this.generateWallet()
+    const savedWallet = await this.walletRepository.save(this.walletRepository.create({
+      address: wallet.keyInfo.address
+    }))
+    return {address: savedWallet.address, mnemonic: wallet.mnemonic}
     // const contract = await this.deployContract()
     // return contract
   }

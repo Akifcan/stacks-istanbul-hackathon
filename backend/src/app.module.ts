@@ -6,10 +6,11 @@ import configuration from './config/configuration';
 import { JwtModule } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Wallet } from './entities/wallet.entity';
+import { Card } from './entities/card.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Wallet]),
+    TypeOrmModule.forFeature([Wallet, Card]),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
