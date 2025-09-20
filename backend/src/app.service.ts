@@ -210,7 +210,7 @@ export class AppService {
       wallet: { id: card.wallet.id }
     }))
 
-    this.invest(cardId)
+    await this.invest(cardId)
 
     return { spend: true }
   }

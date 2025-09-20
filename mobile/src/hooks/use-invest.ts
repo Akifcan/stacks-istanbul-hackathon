@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { WALLET_KEY } from "../config/constants";
 import api from "../config/api";
 
-const useInvest = () => {
+const useInvest = ({refetchInterval}: {refetchInterval?: number}) => {
 
      const { data: invests, isLoading } = useQuery<Invest[]>({
         queryKey: ['invests'],
@@ -16,6 +16,7 @@ const useInvest = () => {
             });
             return response.data;
         },
+        refetchInterval: refetchInterval || 0
     })
 
     return {

@@ -4,9 +4,10 @@ import { TEXT_COLOR } from '../../theme/colors';
 import PurchaseItem from '../purchases/PurchaseItem';
 import useInvest from '../../hooks/use-invest';
 import PurchasesSkeleton from '../skeletons/PurchasesSkeleton';
+import Symbol from '../../../assets/icons/symbol4.svg';
 
 const Purchases: FC = () => {
-    const { invests, isLoading } = useInvest()
+    const { invests, isLoading } = useInvest({refetchInterval: 0})
 
     // Transform API data to Purchase format
     const transformedData: Purchase[] = invests?.map(invest => ({
@@ -21,6 +22,14 @@ const Purchases: FC = () => {
         <PurchaseItem item={item} />
     );
 
+    const EmptyState = () => (
+        <View style={styles.emptyContainer}>
+            <Symbol width={80} height={80} />
+            <Text style={styles.emptyTitle}>No Purchases Yet</Text>
+            <Text style={styles.emptySubtitle}>Your auto purchases will appear here</Text>
+        </View>
+    );
+
     return (
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Recent Purchases</Text>
@@ -33,6 +42,7 @@ const Purchases: FC = () => {
                     keyExtractor={(item) => item.id}
                     renderItem={renderPurchaseItem}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={<EmptyState />}
                 />
             )}
         </View>
@@ -111,6 +121,25 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    emptyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+    },
+    emptyTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: TEXT_COLOR,
+        marginTop: 16,
+        marginBottom: 8,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    emptySubtitle: {
+        fontSize: 14,
+        color: '#666666',
+        textAlign: 'center',
         fontFamily: 'IBMPlexMono-Medium'
     },
 });

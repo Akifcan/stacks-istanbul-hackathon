@@ -7,6 +7,7 @@ import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
 import SpendingSkeleton from '../skeletons/SpendingSkeleton';
+import Symbol from '../../../assets/icons/symbol4.svg'
 
 const Spending: FC = () => {
     const { data: transactions, isLoading } = useQuery<Transaction[]>({
@@ -35,6 +36,14 @@ const Spending: FC = () => {
         <SpendingItem item={item} />
     );
 
+    const EmptyState = () => (
+        <View style={styles.emptyContainer}>
+            <Symbol width={80} height={80} />
+            <Text style={styles.emptyTitle}>No Transactions Yet</Text>
+            <Text style={styles.emptySubtitle}>Your spending activity will appear here</Text>
+        </View>
+    );
+
     return (
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Credit Card Spending</Text>
@@ -47,6 +56,7 @@ const Spending: FC = () => {
                     keyExtractor={(item) => item.id}
                     renderItem={renderSpendingItem}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={<EmptyState />}
                 />
             )}
         </View>
@@ -73,6 +83,25 @@ const styles = StyleSheet.create({
     loadingText: {
         fontSize: 16,
         color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    emptyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+    },
+    emptyTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: TEXT_COLOR,
+        marginTop: 16,
+        marginBottom: 8,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    emptySubtitle: {
+        fontSize: 14,
+        color: '#666666',
+        textAlign: 'center',
         fontFamily: 'IBMPlexMono-Medium'
     },
 });
