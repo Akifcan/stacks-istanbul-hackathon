@@ -7,10 +7,12 @@ import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
 import useInvest from '../../hooks/use-invest';
+import StatsSkeleton from '../skeletons/StatsSkeleton';
+import CurrencySkeleton from '../skeletons/CurrencySkeleton';
 
 const Portfolio: FC = () => {
 
-    const { invests } = useInvest()
+    const { invests, isLoading: isInvestsLoading } = useInvest()
     const TOTAL_PURCHASE = invests?.reduce((curr, acc) => curr += acc.bougth, 0)
 
     const { data: walletData, isLoading } = useQuery<WalletProps>({
@@ -26,6 +28,14 @@ const Portfolio: FC = () => {
         },
     });
 
+    const { data: currencyData, isLoading: isCurrencyLoading } = useQuery<Currency>({
+        queryKey: ['currency'],
+        queryFn: async () => {
+            const response = await api.get<Currency>('/currency');
+            return response.data;
+        },
+    });
+
     return (
         <View style={styles.portfolioSection}>
             <View style={styles.balanceCard}>
@@ -36,19 +46,28 @@ const Portfolio: FC = () => {
                 <Text style={styles.balanceValue}>
                     {isLoading ? 'Loading...' : walletData?.usd || '$0.00'} USD
                 </Text>
-                <Text style={styles.priceInfo}>1 STX = $0.85</Text>
+                {isCurrencyLoading ? (
+                    <CurrencySkeleton />
+                ) : (
+                    <Text style={styles.priceInfo}>1 STX = {currencyData?.currency || '$0.85'}</Text>
+                )}
             </View>
 
-            <View style={styles.statsGrid}>
-                <View style={styles.statCard}>
-                    <Text style={styles.statValue}>${TOTAL_PURCHASE}</Text>
-                    <Text style={styles.statLabel}>Total Invested</Text>
+            {!isInvestsLoading ? (
+                <View style={styles.statsGrid}>
+                    <View style={styles.statCard}>
+                        <Text style={styles.statValue}>${TOTAL_PURCHASE}</Text>
+                        <Text style={styles.statLabel}>Total Invested</Text>
+                    </View>
+                    <View style={styles.statCard}>
+                        <Text style={styles.statValue}>{invests?.length}</Text>
+                        <Text style={styles.statLabel}>Auto Purchases</Text>
+                    </View>
                 </View>
-                <View style={styles.statCard}>
-                    <Text style={styles.statValue}>{invests?.length}</Text>
-                    <Text style={styles.statLabel}>Auto Purchases</Text>
-                </View>
-            </View>
+            ) : (
+                <StatsSkeleton />
+            )}
+            
         </View>
     );
 };

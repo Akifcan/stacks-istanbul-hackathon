@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
+import SpendingSkeleton from '../skeletons/SpendingSkeleton';
 
 const Spending: FC = () => {
     const { data: transactions, isLoading } = useQuery<Transaction[]>({
@@ -38,9 +39,7 @@ const Spending: FC = () => {
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Credit Card Spending</Text>
             {isLoading ? (
-                <View style={styles.loadingContainer}>
-                    <Text style={styles.loadingText}>Loading transactions...</Text>
-                </View>
+                <SpendingSkeleton />
             ) : (
                 <FlatList
                     nestedScrollEnabled

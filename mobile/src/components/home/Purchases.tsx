@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { TEXT_COLOR } from '../../theme/colors';
 import PurchaseItem from '../purchases/PurchaseItem';
 import useInvest from '../../hooks/use-invest';
+import PurchasesSkeleton from '../skeletons/PurchasesSkeleton';
 
 const Purchases: FC = () => {
     const { invests, isLoading } = useInvest()
@@ -24,9 +25,7 @@ const Purchases: FC = () => {
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Recent Purchases</Text>
             {isLoading ? (
-                <View style={styles.loadingContainer}>
-                    <Text style={styles.loadingText}>Loading investments...</Text>
-                </View>
+                <PurchasesSkeleton />
             ) : (
                 <FlatList
                     nestedScrollEnabled

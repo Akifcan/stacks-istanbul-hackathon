@@ -50,3 +50,7 @@ interface Invest {
   transaction: string;
   createdAt: string;
 }
+
+interface Currency {
+  currency: string;
+}
