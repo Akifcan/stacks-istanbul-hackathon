@@ -43,4 +43,9 @@ export class AppController {
     return this.appService.investsByCardId(cardId)
   }
 
+  @Get('transactions')
+  transactions(@CurrentWallet() currentWallet: string){
+    return this.appService.transactions(currentWallet)
+  }
+
 }

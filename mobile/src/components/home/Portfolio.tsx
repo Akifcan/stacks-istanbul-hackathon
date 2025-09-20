@@ -21,6 +21,8 @@ const Portfolio: FC = () => {
         },
     });
 
+
+
     return (
         <View style={styles.portfolioSection}>
             <View style={styles.balanceCard}>

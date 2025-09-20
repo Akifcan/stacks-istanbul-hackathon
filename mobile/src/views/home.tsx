@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"

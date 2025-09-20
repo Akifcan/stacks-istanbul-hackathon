@@ -15,6 +15,8 @@ const RootStack = createStackNavigator<RootStackParamList>()
 const queryClient = new QueryClient()
 
 function App() {
+
+  
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
