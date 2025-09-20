@@ -157,30 +157,34 @@ export class AppService {
       network: 'testnet',
     });
     const tx = await broadcastTransaction({ transaction, network: "testnet" })
-    const transaction2 = await makeContractCall({
-      contractAddress: config!.address,
-      contractName: currentCard.contractName,
-      functionName: 'add-invest',
-      functionArgs: [
-        Cl.uint(currentCard.buyAmount),  // amount
-        Cl.uint(currentCard.spendAmount),    // spend
-        Cl.uint(currentCard.spendAmount)   // current-value
-      ],
-      senderKey: config!.privateKey,
-      network: 'testnet'
-    });
-    const tx2 = await broadcastTransaction({ transaction: transaction2, network: 'testnet' });
 
-    await this.investRepository.save(this.investRepository.create({
-      spent: currentCard.spendAmount,
-      bougth: currentCard.buyAmount,
-      transaction: tx.txid,
-      wallet: { id: currentCard.wallet.id }
-    }))
-    await this.cardRepository.update({ id: currentCard.id }, { spendAmount: 0 })
-
-    console.log(tx)
-    console.log(tx2)
+    setTimeout(async() => {
+      const transaction2 = await makeContractCall({
+        contractAddress: config!.address,
+        contractName: currentCard.contractName,
+        functionName: 'add-invest',
+        functionArgs: [
+          Cl.uint(currentCard.buyAmount),  // amount
+          Cl.uint(currentCard.spendAmount),    // spend
+          Cl.uint(currentCard.spendAmount)   // current-value
+        ],
+        senderKey: config!.privateKey,
+        network: 'testnet'
+      });
+      const tx2 = await broadcastTransaction({ transaction: transaction2, network: 'testnet' });
+  
+      await this.investRepository.save(this.investRepository.create({
+        spent: currentCard.spendAmount,
+        bougth: currentCard.buyAmount,
+        transaction: tx.txid,
+        wallet: { id: currentCard.wallet.id }
+      }))
+      await this.cardRepository.update({ id: currentCard.id }, { spendAmount: 0 })
+  
+      console.log(tx)
+      console.log(tx2)
+    }, 3000)
+    
   }
 
   async mockSpend(cardId: string) {

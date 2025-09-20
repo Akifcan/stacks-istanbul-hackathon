@@ -16,7 +16,7 @@ const useInvest = ({refetchInterval}: {refetchInterval?: number}) => {
             });
             return response.data;
         },
-        refetchInterval: refetchInterval || 0
+        refetchInterval
     })
 
     return {

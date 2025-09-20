@@ -12,7 +12,7 @@ import CurrencySkeleton from '../skeletons/CurrencySkeleton';
 
 const Portfolio: FC = () => {
 
-    const { invests, isLoading: isInvestsLoading } = useInvest({refetchInterval: 6000})
+    const { invests, isLoading: isInvestsLoading } = useInvest({refetchInterval: 60000})
     const TOTAL_PURCHASE = invests?.reduce((curr, acc) => curr += acc.bougth, 0)
 
     const { data: walletData, isLoading } = useQuery<WalletProps>({
