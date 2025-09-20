@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import api from '../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BLACK, BLOOD_ORANGE, TEXT_COLOR, BITCOIN_ORANGE } from '../theme/colors';
+import { BLACK, BLOOD_ORANGE, TEXT_COLOR } from '../theme/colors';
 import { WALLET_KEY } from '../config/constants';
 import { StackNavigation } from '../route';
+import StxIcon from '../../assets/icons/stacks.svg'
+import Symbol6 from '../../assets/icons/symbol6.svg'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CardDetails'>;
-
-
 
 const CardDetails: FC<Props> = ({ route }) => {
     const navigation = useNavigation<StackNavigation>();
@@ -90,8 +90,10 @@ const CardDetails: FC<Props> = ({ route }) => {
                             {/* STX Purchased */}
                             <View style={styles.statCard}>
                                 <Text style={styles.statLabel}>STX Purchased</Text>
-                                <Text style={styles.statValue}>{investment.amount} STX</Text>
+                                <Text style={styles.statValue}>{investment.amount} STX <StxIcon width={30} height={30} /></Text>
                                 <Text style={styles.statSubtext}>Total STX tokens acquired</Text>
+
+                                <Symbol6 style={styles.icon} width={120} height={120} />
                             </View>
                         </>
                     ) : (
@@ -235,12 +237,15 @@ const styles = StyleSheet.create({
         fontFamily: 'IBMPlexMono-Medium'
     },
     statCard: {
+        overflow: 'hidden',
+        position: 'relative',
         backgroundColor: '#1a1a1a',
         borderRadius: 16,
         padding: 20,
         marginBottom: 16,
         borderWidth: 1,
         borderColor: '#2a2a2a',
+        justifyContent: 'center',
     },
     profitCard: {
         borderColor: '#4caf50',
@@ -261,7 +266,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: TEXT_COLOR,
         marginBottom: 4,
-        fontFamily: 'IBMPlexMono-Bold'
+        fontFamily: 'IBMPlexMono-Bold',
+        alignItems: 'center',
     },
     statSubtext: {
         fontSize: 12,
@@ -327,6 +333,12 @@ const styles = StyleSheet.create({
         fontFamily: 'IBMPlexMono-Medium',
         textAlign: 'center',
     },
+    icon: {
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        transform: [{rotate: '20deg'}]
+    }
 });
 
 export default CardDetails;

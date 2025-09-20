@@ -9,6 +9,7 @@ import { WALLET_KEY, MNEMONIC_KEY, MNEMONIC_REVEAL_KEY } from '../config/constan
 import { StackNavigation } from '../route';
 import RNRestart from 'react-native-restart'
 import Clipboard from '@react-native-clipboard/clipboard';
+import Symbol5 from '../../assets/icons/symbol5.svg'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -89,6 +90,7 @@ const Settings: FC<Props> = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Symbol5 style={styles.icon} />
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity
@@ -504,6 +506,13 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'IBMPlexMono-Medium'
     },
+    icon: {
+        position: 'absolute',
+        zIndex: 99,
+        right: -20,
+        top: 20
+    }
+
 });
 
 export default Settings;
