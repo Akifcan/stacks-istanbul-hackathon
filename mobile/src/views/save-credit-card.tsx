@@ -48,7 +48,7 @@ const SaveCreditCard: FC<Props> = () => {
             });
             return response.data;
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             Alert.alert("Success", "Credit card saved successfully!");
             navigation.navigate('Home');
         },

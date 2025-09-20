@@ -1,12 +1,14 @@
 import { FC, useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, ScrollView, Alert, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BLACK, BLOOD_ORANGE, TEXT_COLOR, BITCOIN_ORANGE } from '../theme/colors';
-import { WALLET_KEY, MNEMONIC_KEY } from '../config/constants';
+import { WALLET_KEY, MNEMONIC_KEY, MNEMONIC_REVEAL_KEY } from '../config/constants';
 import { StackNavigation } from '../route';
+import RNRestart from 'react-native-restart'
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -15,6 +17,7 @@ const Settings: FC<Props> = () => {
     const [walletAddress, setWalletAddress] = useState<string>('');
     const [mnemonic, setMnemonic] = useState<string>('');
     const [showMnemonic, setShowMnemonic] = useState<boolean>(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
     useEffect(() => {
         loadWalletData();
@@ -49,14 +52,30 @@ const Settings: FC<Props> = () => {
 
     const handleCopyAddress = async () => {
         // In a real app, you'd use a clipboard library
+        Clipboard.setString(walletAddress)
         Alert.alert("Address Copied", "Wallet address has been copied to clipboard");
     };
 
     const handleCopyMnemonic = async () => {
         if (showMnemonic) {
             // In a real app, you'd use a clipboard library
+            Clipboard.setString(mnemonic)
             Alert.alert("Recovery Phrase Copied", "Recovery phrase has been copied to clipboard");
         }
+    };
+
+    const handleDeleteWallet = () => {
+        setShowDeleteDialog(true);
+    };
+
+    const confirmDeleteWallet = async () => {
+        // Here you would make the API call to delete the wallet
+        // For now, just show confirmation
+        setShowDeleteDialog(false);
+        await AsyncStorage.removeItem(WALLET_KEY)
+        await AsyncStorage.removeItem(MNEMONIC_KEY)
+        await AsyncStorage.removeItem(MNEMONIC_REVEAL_KEY)
+        RNRestart.restart()
     };
 
     const formatMnemonic = (phrase: string) => {
@@ -152,6 +171,18 @@ const Settings: FC<Props> = () => {
                 </View>
 
 
+                {/* Danger Zone */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Danger Zone</Text>
+                    <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={handleDeleteWallet}
+                    >
+                        <Text style={styles.deleteButtonText}>Delete Wallet</Text>
+                        <Text style={styles.deleteButtonSubtext}>Permanently remove your wallet</Text>
+                    </TouchableOpacity>
+                </View>
+
                 {/* App Information */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>App Information</Text>
@@ -168,6 +199,41 @@ const Settings: FC<Props> = () => {
                 </View>
 
             </ScrollView>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                visible={showDeleteDialog}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setShowDeleteDialog(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.modalTitle}>Delete Wallet?</Text>
+                        <Text style={styles.modalMessage}>
+                            This action cannot be undone. Your wallet and all associated data will be permanently deleted.
+                        </Text>
+                        <Text style={styles.modalWarning}>
+                            ⚠️ Make sure you have copied your recovery phrase before proceeding.
+                        </Text>
+
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={styles.cancelButton}
+                                onPress={() => setShowDeleteDialog(false)}
+                            >
+                                <Text style={styles.cancelButtonText}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.confirmDeleteButton}
+                                onPress={confirmDeleteWallet}
+                            >
+                                <Text style={styles.confirmDeleteButtonText}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
@@ -342,6 +408,100 @@ const styles = StyleSheet.create({
     infoValue: {
         fontSize: 16,
         color: '#888888',
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    deleteButton: {
+        backgroundColor: '#2a1a1a',
+        borderRadius: 12,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: '#d32f2f',
+    },
+    deleteButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#f44336',
+        fontFamily: 'IBMPlexMono-Medium',
+        marginBottom: 4,
+    },
+    deleteButtonSubtext: {
+        fontSize: 12,
+        color: '#888888',
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    modalContainer: {
+        backgroundColor: '#1a1a1a',
+        borderRadius: 16,
+        padding: 24,
+        width: '100%',
+        maxWidth: 400,
+        borderWidth: 1,
+        borderColor: '#2a2a2a',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#f44336',
+        marginBottom: 16,
+        textAlign: 'center',
+        fontFamily: 'IBMPlexMono-Bold'
+    },
+    modalMessage: {
+        fontSize: 16,
+        color: TEXT_COLOR,
+        lineHeight: 24,
+        marginBottom: 16,
+        textAlign: 'center',
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    modalWarning: {
+        fontSize: 14,
+        color: BITCOIN_ORANGE,
+        lineHeight: 20,
+        marginBottom: 24,
+        textAlign: 'center',
+        fontFamily: 'IBMPlexMono-Medium',
+        backgroundColor: 'rgba(255, 152, 0, 0.1)',
+        padding: 12,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 152, 0, 0.3)',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        gap: 12,
+    },
+    cancelButton: {
+        flex: 1,
+        backgroundColor: '#2a2a2a',
+        borderRadius: 8,
+        paddingVertical: 12,
+        alignItems: 'center',
+    },
+    cancelButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    confirmDeleteButton: {
+        flex: 1,
+        backgroundColor: '#d32f2f',
+        borderRadius: 8,
+        paddingVertical: 12,
+        alignItems: 'center',
+    },
+    confirmDeleteButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: 'white',
         fontFamily: 'IBMPlexMono-Medium'
     },
 });

@@ -17,7 +17,7 @@ const CreateWallet: FC<Props> = ({navigation}) => {
     const handleCreateWallet = async () => {
         try {
             setLoading(true)
-            const response = await api.get<NewWalletProps>('/create-account')
+            const response = await api.get('/create-account')
             AsyncStorage.setItem(WALLET_KEY, response.data.address)
             AsyncStorage.setItem(MNEMONIC_KEY, response.data.mnemonic)
             navigation.replace('Mnemonic')
@@ -60,7 +60,7 @@ const CreateWallet: FC<Props> = ({navigation}) => {
                         <View style={styles.plusContainer}>
                             <Text style={styles.plusIcon}>+</Text>
                         </View>
-                        <Text style={styles.createNewText}>Start Investing</Text>
+                        <Text style={styles.createNewText}>{!isLoading ? 'Start Investing' : 'Creating...'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { BLACK, BLOOD_ORANGE, TEXT_COLOR, BITCOIN_ORANGE } from "../theme/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MNEMONIC_KEY, MNEMONIC_REVEAL_KEY } from "../config/constants";
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Mnemonic'>;
 
@@ -33,6 +34,7 @@ const Mnemonic: FC<Props> = ({navigation}) => {
 
     const handleCopyPhrase = () => {
         // In a real app, you'd copy to clipboard
+        Clipboard.setString(mnemonicWords.join(', '));
         Alert.alert("Copied", "Recovery phrase copied to clipboard");
     };
 
