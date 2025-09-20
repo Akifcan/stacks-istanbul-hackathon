@@ -14,6 +14,7 @@ declare global {
     };
     Transaction: {
       url: string;
+      title?: string;
     };
   };
 }

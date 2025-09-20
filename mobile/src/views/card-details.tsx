@@ -31,17 +31,51 @@ const CardDetails: FC<Props> = ({ route }) => {
         },
     });
 
-    const getInvestmentData = () => {
-        if (!investData?.value?.[0]?.value?.value) return null;
-        const data = investData.value[0].value.value;
-        return {
-            amount: parseInt(data.amount.value),
-            currentValue: parseInt(data.currentValue.value),
-            spend: parseInt(data.spend.value)
-        };
-    };
+    console.log(investData)
 
-    const investment = getInvestmentData();
+    const renderInvestmentItems = () => {
+        if (!investData?.value) return null;
+
+        return investData.value.map((item, index) => {
+            if (item.type === 'some' && item.value?.value) {
+                const data = item.value.value;
+                const investment = {
+                    amount: parseInt(data.amount.value),
+                    currentValue: parseInt(data.currentValue.value),
+                    spend: parseInt(data.spend.value)
+                };
+
+                return (
+                    <View key={index}>
+                        <Text style={styles.investmentHeader}>Investment #{index + 1}</Text>
+
+                        {/* Total Spent */}
+                        <View style={styles.statCard}>
+                            <Text style={styles.statLabel}>Total Spent</Text>
+                            <Text style={styles.statValue}>${investment.spend}</Text>
+                            <Text style={styles.statSubtext}>Amount invested through this card</Text>
+                        </View>
+
+                        {/* STX Purchased */}
+                        <View style={styles.statCard}>
+                            <Text style={styles.statLabel}>STX Purchased</Text>
+                            <Text style={styles.statValue}>{investment.amount} STX <StxIcon width={30} height={30} /></Text>
+                            <Text style={styles.statSubtext}>Total STX tokens acquired</Text>
+                            <Symbol6 style={styles.icon} width={120} height={120} />
+                        </View>
+
+                        {/* Current Value */}
+                        <View style={styles.statCard}>
+                            <Text style={styles.statLabel}>Current Value</Text>
+                            <Text style={styles.statValue}>${investment.currentValue}</Text>
+                            <Text style={styles.statSubtext}>Current USD value of holdings</Text>
+                        </View>
+                    </View>
+                );
+            }
+            return null;
+        });
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -78,24 +112,8 @@ const CardDetails: FC<Props> = ({ route }) => {
                         <View style={styles.loadingContainer}>
                             <Text style={styles.loadingText}>Loading investment data...</Text>
                         </View>
-                    ) : investment ? (
-                        <>
-                            {/* Total Spent */}
-                            <View style={styles.statCard}>
-                                <Text style={styles.statLabel}>Total Spent</Text>
-                                <Text style={styles.statValue}>${investment.spend}</Text>
-                                <Text style={styles.statSubtext}>Amount invested through this card</Text>
-                            </View>
-
-                            {/* STX Purchased */}
-                            <View style={styles.statCard}>
-                                <Text style={styles.statLabel}>STX Purchased</Text>
-                                <Text style={styles.statValue}>{investment.amount} STX <StxIcon width={30} height={30} /></Text>
-                                <Text style={styles.statSubtext}>Total STX tokens acquired</Text>
-
-                                <Symbol6 style={styles.icon} width={120} height={120} />
-                            </View>
-                        </>
+                    ) : investData?.value && investData.value.length > 0 ? (
+                        renderInvestmentItems()
                     ) : (
                         <View style={styles.noDataContainer}>
                             <Text style={styles.noDataText}>No investment data available</Text>
@@ -331,6 +349,15 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#666666',
         fontFamily: 'IBMPlexMono-Medium',
+        textAlign: 'center',
+    },
+    investmentHeader: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: TEXT_COLOR,
+        marginBottom: 16,
+        marginTop: 8,
+        fontFamily: 'IBMPlexMono-Bold',
         textAlign: 'center',
     },
     icon: {
