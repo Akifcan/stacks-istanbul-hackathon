@@ -39,6 +39,10 @@ export class AppService {
   private generateWallet(): Promise<NewWallet> {
     return new Promise((resolve) => {
       exec("npx stx make_keychain -t", (error, stdout) => {
+
+        console.log(error)
+        console.log(stdout)
+
         const result = JSON.parse(stdout)
         resolve(result)
       })
