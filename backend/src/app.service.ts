@@ -204,7 +204,6 @@ export class AppService {
   }
 
   async invests(currentWallet: string) {
-
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
     return await this.investRepository.find({ order: { createdAt: 'DESC' }, where: { wallet: { id: wallet.id } } })
   }
