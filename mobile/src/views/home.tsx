@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ScrollView, StyleSheet } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { BLACK } from "../theme/colors";
 import Symbol3 from '../../assets/icons/symbol3.svg'
@@ -34,9 +34,9 @@ const Home: FC<Props> = () => {
         <SafeAreaView style={styles.container}>
             <Header />
             <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+            <View style={styles.content}>
                 {renderTabContent()}
-            </ScrollView>
+            </View>
             <Symbol3 style={styles.icon} width={500} />
         </SafeAreaView>
     );

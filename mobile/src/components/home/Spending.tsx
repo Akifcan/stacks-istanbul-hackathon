@@ -2,6 +2,11 @@ import { FC } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { TEXT_COLOR } from '../../theme/colors';
 import SpendingItem from '../spending/SpendingItem';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WALLET_KEY } from '../../config/constants';
+import { Transaction } from '../../@types/wallet';
 
 interface SpendingItemData {
     id: string;
@@ -9,17 +14,38 @@ interface SpendingItemData {
     amount: number;
     date: string;
     category: string;
+    cardInfo?: {
+        cardId: string;
+        startsWith: string;
+    };
 }
 
 const Spending: FC = () => {
-    // Mock data - will be replaced with real data later
-    const recentSpending: SpendingItemData[] = [
-        { id: '1', merchant: 'Starbucks', amount: 12.50, date: '2024-01-15', category: 'Food' },
-        { id: '2', merchant: 'Uber', amount: 18.75, date: '2024-01-15', category: 'Transport' },
-        { id: '3', merchant: 'Amazon', amount: 45.99, date: '2024-01-14', category: 'Shopping' },
-        { id: '4', merchant: 'Netflix', amount: 15.99, date: '2024-01-14', category: 'Entertainment' },
-        { id: '5', merchant: 'Target', amount: 67.43, date: '2024-01-13', category: 'Shopping' },
-    ];
+    const { data: transactions, isLoading } = useQuery<Transaction[]>({
+        queryKey: ['transactions'],
+        queryFn: async () => {
+            const wallet = await AsyncStorage.getItem(WALLET_KEY);
+            const response = await api.get<Transaction[]>('/transactions', {
+                headers: {
+                    'wallet': wallet
+                }
+            });
+            return response.data;
+        },
+    });
+
+    // Transform API data to SpendingItemData format
+    const transformedData: SpendingItemData[] = transactions?.map(transaction => ({
+        id: transaction.id.toString(),
+        merchant: transaction.merchantName,
+        amount: parseFloat(transaction.amount),
+        date: transaction.date,
+        category: transaction.category,
+        cardInfo: {
+            cardId: transaction.card.cardId,
+            startsWith: transaction.card.startsWith
+        }
+    })) || [];
 
     const renderSpendingItem = ({ item }: { item: SpendingItemData }) => (
         <SpendingItem item={item} />
@@ -28,12 +54,19 @@ const Spending: FC = () => {
     return (
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Credit Card Spending</Text>
-            <FlatList
-                data={recentSpending}
-                keyExtractor={(item) => item.id}
-                renderItem={renderSpendingItem}
-                showsVerticalScrollIndicator={false}
-            />
+            {isLoading ? (
+                <View style={styles.loadingContainer}>
+                    <Text style={styles.loadingText}>Loading transactions...</Text>
+                </View>
+            ) : (
+                <FlatList
+                    nestedScrollEnabled
+                    data={transformedData}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderSpendingItem}
+                    showsVerticalScrollIndicator={false}
+                />
+            )}
         </View>
     );
 };
@@ -48,6 +81,17 @@ const styles = StyleSheet.create({
         color: TEXT_COLOR,
         marginBottom: 16,
         fontFamily: 'IBMPlexMono-Bold'
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 40,
+    },
+    loadingText: {
+        fontSize: 16,
+        color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
     },
 });
 

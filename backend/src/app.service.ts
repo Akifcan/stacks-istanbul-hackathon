@@ -236,7 +236,10 @@ export class AppService {
 
   async transactions(currentWallet: string){
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
-    return await this.transactionRepository.find({where: {wallet: {id: wallet.id}}})
+    return await this.transactionRepository.find({
+      relations: ['card'],
+      where: {wallet: {id: wallet.id}}
+    })
   }
 
 }

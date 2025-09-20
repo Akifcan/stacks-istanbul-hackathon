@@ -29,6 +29,7 @@ const Purchases: FC = () => {
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Recent Purchases</Text>
             <FlatList
+            nestedScrollEnabled
                 data={recentPurchases}
                 keyExtractor={(item) => item.id}
                 renderItem={renderPurchaseItem}

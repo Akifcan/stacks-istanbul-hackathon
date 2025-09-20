@@ -8,6 +8,10 @@ interface SpendingItem {
     amount: number;
     date: string;
     category: string;
+    cardInfo?: {
+        cardId: string;
+        startsWith: string;
+    };
 }
 
 interface SpendingItemProps {
@@ -24,6 +28,11 @@ const SpendingItem: FC<SpendingItemProps> = ({ item }) => {
                 <View>
                     <Text style={styles.listItemTitle}>{item.merchant}</Text>
                     <Text style={styles.listItemDate}>{item.date}</Text>
+                    {item.cardInfo && (
+                        <Text style={styles.cardInfo}>
+                            Card: **** {item.cardInfo.startsWith} • {item.cardInfo.cardId}
+                        </Text>
+                    )}
                 </View>
             </View>
             <Text style={styles.listItemAmount}>-${item.amount.toFixed(2)}</Text>
@@ -79,6 +88,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    cardInfo: {
+        fontSize: 11,
+        color: '#888888',
+        marginTop: 2,
         fontFamily: 'IBMPlexMono-Medium'
     },
 });
