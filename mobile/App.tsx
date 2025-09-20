@@ -10,6 +10,7 @@ import CreditCards from './src/views/credit-cards';
 import Settings from './src/views/settings';
 import Splash from './src/views/splash';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import CardDetails from './src/views/card-details';
 
 const RootStack = createStackNavigator<RootStackParamList>()
 const queryClient = new QueryClient()
@@ -57,6 +58,13 @@ function App() {
           <RootStack.Screen
             name="Settings"
             component={Settings}
+            options={{
+              ...TransitionPresets.ModalPresentationIOS
+            }}
+          />
+          <RootStack.Screen
+            name="CardDetails"
+            component={CardDetails}
             options={{
               ...TransitionPresets.ModalPresentationIOS
             }}

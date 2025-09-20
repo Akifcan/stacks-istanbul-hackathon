@@ -9,3 +9,27 @@ interface CardProps {
     buyAmount: number
     createdAt: string
 }
+
+interface CardInvestData {
+    type: string;
+    value: Array<{
+        type: string;
+        value: {
+            type: string;
+            value: {
+                amount: {
+                    type: string;
+                    value: string;
+                };
+                currentValue: {
+                    type: string;
+                    value: string;
+                };
+                spend: {
+                    type: string;
+                    value: string;
+                };
+            };
+        };
+    }>;
+}

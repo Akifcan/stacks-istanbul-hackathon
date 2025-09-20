@@ -7,4 +7,5 @@ type RootStackParamList = {
     CreditCards: undefined
     Settings: undefined
     Splash: undefined
+    CardDetails: {cardId: string, starsWith: string}
 };

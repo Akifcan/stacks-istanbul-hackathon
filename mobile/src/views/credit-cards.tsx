@@ -29,7 +29,10 @@ const CreditCards: FC<Props> = () => {
     });
 
     const renderCard = ({ item }: { item: CardProps }) => (
-        <View style={styles.cardContainer}>
+        <TouchableOpacity
+            style={styles.cardContainer}
+            onPress={() => navigation.navigate('CardDetails', { cardId: item.cardId, starsWith: item.startsWith })}
+        >
             <View style={styles.cardHeader}>
                 <View style={styles.cardNumberContainer}>
                     <Text style={styles.cardNumber}>**** **** **** {item.startsWith}</Text>
@@ -71,7 +74,7 @@ const CreditCards: FC<Props> = () => {
                     />
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     return (
