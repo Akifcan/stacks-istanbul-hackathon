@@ -13,9 +13,7 @@
 
 - This project is a **mobile application** built with **React Native** and integrated with **blockchain via Clarity smart contracts**. It allows users to manage their investments, track STX token balances, and interact with smart contracts securely.
 
-<video width="300" controls src="pitch-deck-video.mov" title="Title"></video>
-
-![alt text](app.png)
+<video width="250" controls src="pitch-deck-video.mov" title="Title"></video>
 
 ---
 
@@ -29,12 +27,16 @@
 
 ---
 
+<img width="200" src="app.png" />
+
+--- 
 ## Tech Stack
 
 - **React Native**: Cross-platform mobile app
 - **Clarity / Stacks**: Smart contracts for investment and token management
 
-![alt text](app2.png)
+<img width="200" src="app2.png" />
+
 ![Android](https://img.shields.io/badge/Android-✓-green)
 ![iOS](https://img.shields.io/badge/iOS-✓-blue)
 ![Bitcoin](https://img.shields.io/badge/Bitcoin-FFD700?style=for-the-badge&logo=bitcoin&logoColor=white)
