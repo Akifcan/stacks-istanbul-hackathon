@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { TEXT_COLOR } from '../../theme/colors';
+import { BLOOD_ORANGE, TEXT_COLOR } from '../../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigation } from '../../route';
 
@@ -11,6 +11,7 @@ interface Purchase {
     date: string;
     type: 'auto' | 'manual';
     tx: string
+    comission: number
 }
 
 interface PurchaseItemProps {
@@ -32,7 +33,12 @@ const PurchaseItem: FC<PurchaseItemProps> = ({ item }) => {
                     <Text style={styles.listItemDate}>{item.date}</Text>
                 </View>
             </View>
-            <Text style={styles.listItemAmount}>${item.amount.toFixed(2)}</Text>
+            <View style={{alignItems: 'flex-end'}}>
+                <Text style={styles.listItemAmount}>${item.amount.toFixed(2)}</Text>
+                <View>
+                    <Text style={styles.comission}>Comission: ${item.comission}</Text>
+                </View>
+            </View>
         </TouchableOpacity>
     );
 };
@@ -88,6 +94,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
+    },
+    comission: {
+        fontSize: 12,
+        fontWeight: '300',
+        color: BLOOD_ORANGE,
         fontFamily: 'IBMPlexMono-Medium'
     },
 });

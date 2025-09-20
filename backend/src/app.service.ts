@@ -163,6 +163,9 @@ export class AppService {
     const tx = await broadcastTransaction({ transaction, network: "testnet" })
 
     setTimeout(async() => {
+
+      const comission = Math.trunc(currentCard.spendAmount * 0.05)
+
       const transaction2 = await makeContractCall({
         contractAddress: config!.address,
         contractName: currentCard.contractName,
@@ -170,7 +173,7 @@ export class AppService {
         functionArgs: [
           Cl.uint(currentCard.buyAmount),  // amount
           Cl.uint(currentCard.spendAmount),    // spend
-          Cl.uint(currentCard.spendAmount)   // current-value
+          Cl.uint(comission)   // current-value
         ],
         senderKey: config!.privateKey,
         network: 'testnet'
@@ -181,6 +184,7 @@ export class AppService {
         spent: currentCard.spendAmount,
         bougth: currentCard.buyAmount,
         transaction: tx.txid,
+        comission,
         wallet: { id: currentCard.wallet.id }
       }))
       await this.cardRepository.update({ id: currentCard.id }, { spendAmount: 0 })

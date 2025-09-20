@@ -66,9 +66,9 @@ const CardDetails: FC<Props> = ({ route }) => {
 
                         {/* Current Value */}
                         <View style={styles.statCard}>
-                            <Text style={styles.statLabel}>Current Value</Text>
+                            <Text style={styles.statLabel}>Comission</Text>
                             <Text style={styles.statValue}>${investment.currentValue}</Text>
-                            <Text style={styles.statSubtext}>Current USD value of holdings</Text>
+                            <Text style={styles.statSubtext}>Platform Comission</Text>
                         </View>
                     </View>
                 );

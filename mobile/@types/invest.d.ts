@@ -5,4 +5,5 @@ interface Purchase {
     date: string;
     type: 'auto' | 'manual';
     tx: string
+    comission: number
 }

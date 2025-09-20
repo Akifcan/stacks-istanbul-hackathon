@@ -48,6 +48,7 @@ interface Invest {
   spent: number;
   bougth: number;
   transaction: string;
+  comission: number
   createdAt: string;
 }
 

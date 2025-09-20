@@ -1,28 +1,31 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Wallet } from "./wallet.entity";
 
-@Entity({name: 'stacklit_invest'})
+@Entity({ name: 'stacklit_invest' })
 export class Invest {
 
-        @PrimaryGeneratedColumn()
-        id: number
+    @PrimaryGeneratedColumn()
+    id: number
 
-        @Column()
-        spent: number
-    
-        @Column()
-        bougth: number
+    @Column()
+    spent: number
 
-            @ManyToOne(() => Wallet, wallet => wallet.id, { onDelete: 'CASCADE' })
-            @JoinColumn({ name: 'wallet_id' })
-            wallet: Wallet
-        
-                @Column({unique: true})
+    @Column()
+    bougth: number
+
+    @ManyToOne(() => Wallet, wallet => wallet.id, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'wallet_id' })
+    wallet: Wallet
+
+    @Column({ unique: true })
     transaction: string
 
+    @Column({default: 5})
+    comission: number
 
-        @CreateDateColumn({ name: 'created_at' })
-        createdAt: Date
-    
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date
+
 
 }

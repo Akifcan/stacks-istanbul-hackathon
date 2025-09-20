@@ -7,8 +7,8 @@ import PurchasesSkeleton from '../skeletons/PurchasesSkeleton';
 import Symbol from '../../../assets/icons/symbol4.svg';
 
 const Purchases: FC = () => {
-    const { invests, isLoading } = useInvest({refetchInterval: 0})
-
+    const { invests, isLoading } = useInvest({refetchInterval: 60000})
+    console.log(invests)
     // Transform API data to Purchase format
     const transformedData: Purchase[] = invests?.map(invest => ({
         id: invest.id.toString(),
@@ -16,7 +16,8 @@ const Purchases: FC = () => {
         stxAmount: invest.bougth,
         date: new Date(invest.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
         type: 'auto' as const,
-        tx: invest.transaction
+        tx: invest.transaction,
+        comission: invest.comission
     })) || [];
 
     const renderPurchaseItem = ({ item }: { item: Purchase }) => (
