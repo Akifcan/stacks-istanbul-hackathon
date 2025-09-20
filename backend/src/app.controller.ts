@@ -48,4 +48,9 @@ export class AppController {
     return this.appService.transactions(currentWallet)
   }
 
+  @Get('currency')
+  currency(){
+    return this.appService.currency()
+  }
+
 }

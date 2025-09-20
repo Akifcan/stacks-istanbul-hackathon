@@ -6,8 +6,13 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
+import useInvest from '../../hooks/use-invest';
 
 const Portfolio: FC = () => {
+
+    const { invests } = useInvest()
+    const TOTAL_PURCHASE = invests?.reduce((curr, acc) => curr += acc.bougth, 0)
+
     const { data: walletData, isLoading } = useQuery<WalletProps>({
         queryKey: ['wallet-balance'],
         queryFn: async () => {
@@ -20,8 +25,6 @@ const Portfolio: FC = () => {
             return response.data;
         },
     });
-
-
 
     return (
         <View style={styles.portfolioSection}>
@@ -38,11 +41,11 @@ const Portfolio: FC = () => {
 
             <View style={styles.statsGrid}>
                 <View style={styles.statCard}>
-                    <Text style={styles.statValue}>$30</Text>
+                    <Text style={styles.statValue}>${TOTAL_PURCHASE}</Text>
                     <Text style={styles.statLabel}>Total Invested</Text>
                 </View>
                 <View style={styles.statCard}>
-                    <Text style={styles.statValue}>5</Text>
+                    <Text style={styles.statValue}>{invests?.length}</Text>
                     <Text style={styles.statLabel}>Auto Purchases</Text>
                 </View>
             </View>

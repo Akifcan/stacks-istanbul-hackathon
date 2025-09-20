@@ -113,6 +113,18 @@ export class AppService {
     }
   }
 
+  async currency() {
+    const Currency = await this.currencyService.getSTXinUSD()
+
+    return {
+      currency: new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(Currency)
+    }
+
+  }
+
   async savedCards(currentWallet: string) {
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
     return this.cardRepository.find({ where: { wallet: { id: wallet.id } } })
@@ -234,11 +246,11 @@ export class AppService {
 
   }
 
-  async transactions(currentWallet: string){
+  async transactions(currentWallet: string) {
     const wallet = await this.walletRepository.findOneOrFail({ where: { address: currentWallet } })
     return await this.transactionRepository.find({
       relations: ['card'],
-      where: {wallet: {id: wallet.id}}
+      where: { wallet: { id: wallet.id } }
     })
   }
 
