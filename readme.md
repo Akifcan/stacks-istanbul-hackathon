@@ -40,8 +40,22 @@ https://drive.google.com/file/d/1KYEQGpGLAiHnOj5C5lSUVOPMv4HXDXTp/view?usp=shari
 
 - **React Native**: Cross-platform mobile app
 - **Clarity / Stacks**: Smart contracts for investment and token management
+- **NestJS**: Backend
 
 <img width="200" src="app2.png" />
+
+## Project Setup
+
+### Backend
+
+- Backend setup not needed. Backend deployed on the server.
+
+### Mobile App
+
+- yarn install
+- yarn ios
+
+--- 
 
 ![Android](https://img.shields.io/badge/Android-✓-green)
 ![iOS](https://img.shields.io/badge/iOS-✓-blue)
