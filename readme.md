@@ -6,8 +6,14 @@
 ![Blockchain](https://img.shields.io/badge/Blockchain-Enabled-0078D7?style=for-the-badge&logo=blockchain)
 ![Stacks](https://img.shields.io/badge/Stacks-CLARITY-0055FF?style=for-the-badge&logo=stacks)
 
+
 ![alt text](167.png)
 - Download via testflight: https://testflight.apple.com/join/8ZBdDZ2m
+
+## Pitch Deck: 
+https://drive.google.com/file/d/1KYEQGpGLAiHnOj5C5lSUVOPMv4HXDXTp/view?usp=sharing
+
+---
 
 - **StackLit | Spend to Stack** is a seamless way to turn your everyday spending into automated STX savings. Without any sign-up or complicated setup, users instantly get a Stacks wallet, link their credit card, and set simple rules—like “when I spend 500 TL, add 5 STX to my wallet.” Every time a user spends, StackLit automatically invests according to their instructions, helping them grow their crypto holdings effortlessly while they shop.
 
