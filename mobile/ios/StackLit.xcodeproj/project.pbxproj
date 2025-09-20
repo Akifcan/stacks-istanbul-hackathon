@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0279BE6745311C549F5879AE /* libPods-StackLit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 072070ECF0DA34E116417D13 /* libPods-StackLit.a */; };
 		08DFBEE4F15F4DE2B15CCD9D /* IBMPlexMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FBBC12CF52E41B19C7173BA /* IBMPlexMono-SemiBold.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1E554BB77C60436AB5D05660 /* IBMPlexMono-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74972A04F8774EA1921914AF /* IBMPlexMono-BoldItalic.ttf */; };
 		1F9E4D38AF0F4655B5B306EE /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE9B2A0FC21E41DB9989AD32 /* IBMPlexMono-Regular.ttf */; };
 		2ECFA97DEFAF3D614CEE3C9B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		37ED3EA075CB0479E6BCCA5D /* libPods-StackLit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2019115774FE5D25E2F09BC0 /* libPods-StackLit.a */; };
 		3E997312FA644945BEB81273 /* IBMPlexMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D25231E7FAE404E9ABF04B6 /* IBMPlexMono-MediumItalic.ttf */; };
 		3EF1108A64484A2D819FB20F /* IBMPlexMono-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2B6DCE461041BDAABC8319 /* IBMPlexMono-SemiBoldItalic.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
@@ -29,25 +29,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		072070ECF0DA34E116417D13 /* libPods-StackLit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StackLit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FBBC12CF52E41B19C7173BA /* IBMPlexMono-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-SemiBold.ttf"; path = "../assets/fonts/IBMPlexMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* StackLit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackLit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StackLit/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = StackLit/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = StackLit/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		17968FE4570B4B3B8DD51701 /* IBMPlexMono-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-Light.ttf"; path = "../assets/fonts/IBMPlexMono-Light.ttf"; sourceTree = "<group>"; };
-		2FC4C2B950D91D43BA73DAAC /* Pods-StackLit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StackLit.release.xcconfig"; path = "Target Support Files/Pods-StackLit/Pods-StackLit.release.xcconfig"; sourceTree = "<group>"; };
+		2019115774FE5D25E2F09BC0 /* libPods-StackLit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StackLit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D25231E7FAE404E9ABF04B6 /* IBMPlexMono-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-MediumItalic.ttf"; path = "../assets/fonts/IBMPlexMono-MediumItalic.ttf"; sourceTree = "<group>"; };
 		5437F98DC1284E4C8555332A /* IBMPlexMono-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-Italic.ttf"; path = "../assets/fonts/IBMPlexMono-Italic.ttf"; sourceTree = "<group>"; };
 		606AB324EDE34CA6BB4B054D /* IBMPlexMono-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-ThinItalic.ttf"; path = "../assets/fonts/IBMPlexMono-ThinItalic.ttf"; sourceTree = "<group>"; };
-		649BA9E13991800B328382F8 /* Pods-StackLit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StackLit.debug.xcconfig"; path = "Target Support Files/Pods-StackLit/Pods-StackLit.debug.xcconfig"; sourceTree = "<group>"; };
 		66F62CF082714C30B032B5F8 /* IBMPlexMono-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-ExtraLight.ttf"; path = "../assets/fonts/IBMPlexMono-ExtraLight.ttf"; sourceTree = "<group>"; };
 		74972A04F8774EA1921914AF /* IBMPlexMono-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-BoldItalic.ttf"; path = "../assets/fonts/IBMPlexMono-BoldItalic.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = StackLit/AppDelegate.swift; sourceTree = "<group>"; };
 		77FE4864AA504010AD666430 /* IBMPlexMono-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-Bold.ttf"; path = "../assets/fonts/IBMPlexMono-Bold.ttf"; sourceTree = "<group>"; };
+		7957375366676E37BD6B261F /* Pods-StackLit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StackLit.release.xcconfig"; path = "Target Support Files/Pods-StackLit/Pods-StackLit.release.xcconfig"; sourceTree = "<group>"; };
 		7C2B6DCE461041BDAABC8319 /* IBMPlexMono-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-SemiBoldItalic.ttf"; path = "../assets/fonts/IBMPlexMono-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = StackLit/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8BB5667B1A86472386ADA7E0 /* IBMPlexMono-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-LightItalic.ttf"; path = "../assets/fonts/IBMPlexMono-LightItalic.ttf"; sourceTree = "<group>"; };
+		984DECCE5B5192DD99481D43 /* Pods-StackLit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StackLit.debug.xcconfig"; path = "Target Support Files/Pods-StackLit/Pods-StackLit.debug.xcconfig"; sourceTree = "<group>"; };
 		C3C116B3A9D74E2DA2153F61 /* IBMPlexMono-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-ExtraLightItalic.ttf"; path = "../assets/fonts/IBMPlexMono-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		DD74F33BB4194D5CB6A806A8 /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-Medium.ttf"; path = "../assets/fonts/IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
 		DE9B2A0FC21E41DB9989AD32 /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "IBMPlexMono-Regular.ttf"; path = "../assets/fonts/IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0279BE6745311C549F5879AE /* libPods-StackLit.a in Frameworks */,
+				37ED3EA075CB0479E6BCCA5D /* libPods-StackLit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				072070ECF0DA34E116417D13 /* libPods-StackLit.a */,
+				2019115774FE5D25E2F09BC0 /* libPods-StackLit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -143,8 +143,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				649BA9E13991800B328382F8 /* Pods-StackLit.debug.xcconfig */,
-				2FC4C2B950D91D43BA73DAAC /* Pods-StackLit.release.xcconfig */,
+				984DECCE5B5192DD99481D43 /* Pods-StackLit.debug.xcconfig */,
+				7957375366676E37BD6B261F /* Pods-StackLit.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -156,13 +156,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "StackLit" */;
 			buildPhases = (
-				45FFFD282BF52BB9A8C55731 /* [CP] Check Pods Manifest.lock */,
+				169A10F2C2AF7C6739004C79 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				DC7F39658D46261622FB6AE8 /* [CP] Embed Pods Frameworks */,
-				B3B9E1381279B92750A37CA5 /* [CP] Copy Pods Resources */,
+				D6C7B380127C352C5FB5CCFA /* [CP] Embed Pods Frameworks */,
+				4AC1BF82CBBB45BDAF7B24F7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -248,7 +248,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		45FFFD282BF52BB9A8C55731 /* [CP] Check Pods Manifest.lock */ = {
+		169A10F2C2AF7C6739004C79 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,7 +270,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B3B9E1381279B92750A37CA5 /* [CP] Copy Pods Resources */ = {
+		4AC1BF82CBBB45BDAF7B24F7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -287,7 +287,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StackLit/Pods-StackLit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DC7F39658D46261622FB6AE8 /* [CP] Embed Pods Frameworks */ = {
+		D6C7B380127C352C5FB5CCFA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -320,7 +320,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 649BA9E13991800B328382F8 /* Pods-StackLit.debug.xcconfig */;
+			baseConfigurationReference = 984DECCE5B5192DD99481D43 /* Pods-StackLit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -351,7 +351,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2FC4C2B950D91D43BA73DAAC /* Pods-StackLit.release.xcconfig */;
+			baseConfigurationReference = 7957375366676E37BD6B261F /* Pods-StackLit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
