@@ -8,4 +8,5 @@ type RootStackParamList = {
     Settings: undefined
     Splash: undefined
     CardDetails: {cardId: string, starsWith: string}
+    Transaction: {url: string, title?: string}
 };

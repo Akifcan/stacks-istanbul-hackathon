@@ -15,7 +15,8 @@ const Purchases: FC = () => {
         amount: invest.spent,
         stxAmount: invest.bougth,
         date: new Date(invest.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
-        type: 'auto' as const
+        type: 'auto' as const,
+        tx: invest.transaction
     })) || [];
 
     const renderPurchaseItem = ({ item }: { item: Purchase }) => (

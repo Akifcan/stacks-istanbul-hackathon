@@ -15,6 +15,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CreditCards'>;
 const CreditCards: FC<Props> = () => {
     const navigation = useNavigation<StackNavigation>();
 
+    const handleViewContract = (contractTx: string) => {
+        navigation.navigate('Transaction', {url: `https://explorer.hiro.so/txid/${contractTx}?chain=testnet`})
+    };
+
     const { data: cards, isLoading } = useQuery<CardProps[]>({
         queryKey: ['saved-cards'],
         queryFn: async () => {
@@ -28,8 +32,8 @@ const CreditCards: FC<Props> = () => {
         },
     });
 
-    const renderCard = ({ item }: { item: CardProps }) => (
-        <TouchableOpacity
+    const renderCard = ({ item }: { item: CardProps }) => {
+        return <TouchableOpacity
             style={styles.cardContainer}
             onPress={() => navigation.navigate('CardDetails', { cardId: item.cardId, starsWith: item.startsWith })}
         >
@@ -74,8 +78,18 @@ const CreditCards: FC<Props> = () => {
                     />
                 </View>
             </View>
+
+            {/* View Contract Button */}
+            {item.contractTx && (
+                <TouchableOpacity
+                    style={styles.viewContractButton}
+                    onPress={() => handleViewContract(item.contractTx)}
+                >
+                    <Text style={styles.viewContractButtonText}>View Contract</Text>
+                </TouchableOpacity>
+            )}
         </TouchableOpacity>
-    );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -315,6 +329,20 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: BITCOIN_ORANGE,
         borderRadius: 3,
+    },
+    viewContractButton: {
+        backgroundColor: BLOOD_ORANGE,
+        borderRadius: 10,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        marginTop: 16,
+        alignItems: 'center',
+    },
+    viewContractButtonText: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: BLACK,
+        fontFamily: 'IBMPlexMono-Medium'
     },
 });
 

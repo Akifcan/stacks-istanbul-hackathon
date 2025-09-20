@@ -4,4 +4,5 @@ interface Purchase {
     stxAmount: number;
     date: string;
     type: 'auto' | 'manual';
+    tx: string
 }

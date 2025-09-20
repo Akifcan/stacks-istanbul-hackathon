@@ -9,9 +9,9 @@ import { WALLET_KEY } from '../../config/constants';
 import useInvest from '../../hooks/use-invest';
 import StatsSkeleton from '../skeletons/StatsSkeleton';
 import CurrencySkeleton from '../skeletons/CurrencySkeleton';
+import ViewWalletButton from '../common/ViewWalletButton';
 
 const Portfolio: FC = () => {
-
     const { invests, isLoading: isInvestsLoading } = useInvest({refetchInterval: 60000})
     const TOTAL_PURCHASE = invests?.reduce((curr, acc) => curr += acc.bougth, 0)
 
@@ -52,6 +52,9 @@ const Portfolio: FC = () => {
                 ) : (
                     <Text style={styles.priceInfo}>1 STX = {currencyData?.currency || '$0.85'}</Text>
                 )}
+
+                {/* View Wallet Button */}
+                <ViewWalletButton style={styles.viewWalletButton} />
             </View>
 
             {!isInvestsLoading ? (
@@ -136,6 +139,9 @@ const styles = StyleSheet.create({
         color: '#888888',
         textAlign: 'center',
         fontFamily: 'IBMPlexMono-Medium'
+    },
+    viewWalletButton: {
+        marginTop: 16,
     },
 });
 

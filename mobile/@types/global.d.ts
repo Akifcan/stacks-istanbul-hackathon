@@ -12,6 +12,9 @@ declare global {
       cardId: string;
       starsWith: string;
     };
+    Transaction: {
+      url: string;
+    };
   };
 }
 

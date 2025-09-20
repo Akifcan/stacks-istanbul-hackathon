@@ -9,7 +9,8 @@ import { WALLET_KEY, MNEMONIC_KEY, MNEMONIC_REVEAL_KEY } from '../config/constan
 import { StackNavigation } from '../route';
 import RNRestart from 'react-native-restart'
 import Clipboard from '@react-native-clipboard/clipboard';
-import Symbol5 from '../../assets/icons/symbol5.svg'
+import Symbol5 from '../../assets/icons/symbol5.svg';
+import ViewWalletButton from '../components/common/ViewWalletButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -120,6 +121,12 @@ const Settings: FC<Props> = () => {
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.addressText}>{walletAddress || 'No wallet found'}</Text>
+
+                        {/* View Wallet Button */}
+                        <ViewWalletButton
+                            style={styles.viewWalletButton}
+                            buttonText="View on Explorer"
+                        />
                     </View>
 
                     {/* Recovery Phrase */}
@@ -511,7 +518,10 @@ const styles = StyleSheet.create({
         zIndex: 99,
         right: -20,
         top: 20
-    }
+    },
+    viewWalletButton: {
+        marginTop: 16,
+    },
 
 });
 

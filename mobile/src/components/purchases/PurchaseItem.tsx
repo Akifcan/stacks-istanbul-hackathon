@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TEXT_COLOR } from '../../theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigation } from '../../route';
 
 interface Purchase {
     id: string;
@@ -8,6 +10,7 @@ interface Purchase {
     stxAmount: number;
     date: string;
     type: 'auto' | 'manual';
+    tx: string
 }
 
 interface PurchaseItemProps {
@@ -15,8 +18,11 @@ interface PurchaseItemProps {
 }
 
 const PurchaseItem: FC<PurchaseItemProps> = ({ item }) => {
+
+    const navigation = useNavigation<StackNavigation>();
+
     return (
-        <View style={styles.listItem}>
+        <TouchableOpacity style={styles.listItem} onPress={() => navigation.navigate('Transaction', {url: `https://explorer.hiro.so/txid/${item.tx}?chain=testnet`})}>
             <View style={styles.listItemLeft}>
                 <View style={[styles.typeIndicator, item.type === 'auto' ? styles.autoIndicator : styles.manualIndicator]}>
                     <Text style={styles.typeText}>{item.type === 'auto' ? 'AUTO' : 'MANUAL'}</Text>
@@ -27,7 +33,7 @@ const PurchaseItem: FC<PurchaseItemProps> = ({ item }) => {
                 </View>
             </View>
             <Text style={styles.listItemAmount}>${item.amount.toFixed(2)}</Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 

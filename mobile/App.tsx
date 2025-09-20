@@ -11,6 +11,8 @@ import Settings from './src/views/settings';
 import Splash from './src/views/splash';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CardDetails from './src/views/card-details';
+import Webview from './src/views/transaction-view';
+import TransactionView from './src/views/transaction-view';
 
 const RootStack = createStackNavigator<RootStackParamList>()
 const queryClient = new QueryClient()
@@ -72,6 +74,13 @@ function App() {
           <RootStack.Screen
             name="Splash"
             component={Splash}
+          />
+          <RootStack.Screen
+            name="Transaction"
+            component={TransactionView}
+                        options={{
+              ...TransitionPresets.ModalPresentationIOS
+            }}
           />
         </RootStack.Navigator>
       </NavigationContainer>
