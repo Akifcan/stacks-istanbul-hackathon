@@ -6,19 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
-import { Transaction } from '../../@types/wallet';
-
-interface SpendingItemData {
-    id: string;
-    merchant: string;
-    amount: number;
-    date: string;
-    category: string;
-    cardInfo?: {
-        cardId: string;
-        startsWith: string;
-    };
-}
 
 const Spending: FC = () => {
     const { data: transactions, isLoading } = useQuery<Transaction[]>({
@@ -40,11 +27,7 @@ const Spending: FC = () => {
         merchant: transaction.merchantName,
         amount: parseFloat(transaction.amount),
         date: transaction.date,
-        category: transaction.category,
-        cardInfo: {
-            cardId: transaction.card.cardId,
-            startsWith: transaction.card.startsWith
-        }
+        category: transaction.category
     })) || [];
 
     const renderSpendingItem = ({ item }: { item: SpendingItemData }) => (

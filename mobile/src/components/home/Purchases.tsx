@@ -6,15 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WALLET_KEY } from '../../config/constants';
-import { Invest } from '../../@types/wallet';
-
-interface Purchase {
-    id: string;
-    amount: number;
-    stxAmount: number;
-    date: string;
-    type: 'auto' | 'manual';
-}
 
 const Purchases: FC = () => {
     const { data: invests, isLoading } = useQuery<Invest[]>({
