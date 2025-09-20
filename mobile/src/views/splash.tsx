@@ -32,6 +32,7 @@ const Splash:FC<Props> = ({navigation}) => {
         }
 
         api.defaults.headers['wallet'] = currentWallet
+        console.log(currentWallet)
 
         const savedCards = await api.get<CardProps[]>('/saved-cards')
 

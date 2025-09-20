@@ -2,6 +2,11 @@ import { FC } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { TEXT_COLOR } from '../../theme/colors';
 import PurchaseItem from '../purchases/PurchaseItem';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WALLET_KEY } from '../../config/constants';
+import { Invest } from '../../@types/wallet';
 
 interface Purchase {
     id: string;
@@ -12,14 +17,27 @@ interface Purchase {
 }
 
 const Purchases: FC = () => {
-    // Mock data - will be replaced with real data later
-    const recentPurchases: Purchase[] = [
-        { id: '1', amount: 5, stxAmount: 5.88, date: '2024-01-15', type: 'auto' },
-        { id: '2', amount: 5, stxAmount: 5.95, date: '2024-01-14', type: 'auto' },
-        { id: '3', amount: 10, stxAmount: 11.76, date: '2024-01-13', type: 'manual' },
-        { id: '4', amount: 5, stxAmount: 6.02, date: '2024-01-12', type: 'auto' },
-        { id: '5', amount: 5, stxAmount: 5.81, date: '2024-01-11', type: 'auto' },
-    ];
+    const { data: invests, isLoading } = useQuery<Invest[]>({
+        queryKey: ['invests'],
+        queryFn: async () => {
+            const wallet = await AsyncStorage.getItem(WALLET_KEY);
+            const response = await api.get<Invest[]>('/invests', {
+                headers: {
+                    'wallet': wallet
+                }
+            });
+            return response.data;
+        },
+    });
+
+    // Transform API data to Purchase format
+    const transformedData: Purchase[] = invests?.map(invest => ({
+        id: invest.id.toString(),
+        amount: invest.spent,
+        stxAmount: invest.bougth,
+        date: new Date(invest.createdAt).toISOString().split('T')[0], // Format to YYYY-MM-DD
+        type: 'auto' as const
+    })) || [];
 
     const renderPurchaseItem = ({ item }: { item: Purchase }) => (
         <PurchaseItem item={item} />
@@ -28,13 +46,19 @@ const Purchases: FC = () => {
     return (
         <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>Recent Purchases</Text>
-            <FlatList
-            nestedScrollEnabled
-                data={recentPurchases}
-                keyExtractor={(item) => item.id}
-                renderItem={renderPurchaseItem}
-                showsVerticalScrollIndicator={false}
-            />
+            {isLoading ? (
+                <View style={styles.loadingContainer}>
+                    <Text style={styles.loadingText}>Loading investments...</Text>
+                </View>
+            ) : (
+                <FlatList
+                    nestedScrollEnabled
+                    data={transformedData}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderPurchaseItem}
+                    showsVerticalScrollIndicator={false}
+                />
+            )}
         </View>
     );
 };
@@ -49,6 +73,17 @@ const styles = StyleSheet.create({
         color: TEXT_COLOR,
         marginBottom: 16,
         fontFamily: 'IBMPlexMono-Bold'
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 40,
+    },
+    loadingText: {
+        fontSize: 16,
+        color: TEXT_COLOR,
+        fontFamily: 'IBMPlexMono-Medium'
     },
     listItem: {
         flexDirection: 'row',

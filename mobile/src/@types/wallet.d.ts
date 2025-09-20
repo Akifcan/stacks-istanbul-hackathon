@@ -37,3 +37,11 @@ export interface Transaction {
   };
   createdAt: string;
 }
+
+export interface Invest {
+  id: number;
+  spent: number;
+  bougth: number;
+  transaction: string;
+  createdAt: string;
+}
