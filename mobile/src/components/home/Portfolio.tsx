@@ -26,6 +26,7 @@ const Portfolio: FC = () => {
             });
             return response.data;
         },
+        refetchInterval: 60000,
     });
 
     const { data: currencyData, isLoading: isCurrencyLoading } = useQuery<Currency>({
