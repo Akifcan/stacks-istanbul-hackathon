@@ -13,11 +13,12 @@ import { Transaction } from './entities/transaction.entity';
 import { Invest } from './entities/invest.entity';
 import { Coords } from './entities/coords.entity';
 import { CronOracle } from './entities/cron-oracle';
+import { MatchScore } from './entities/match-score.entity';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([Wallet, Card, Transaction, Invest, Coords, CronOracle]),
+    TypeOrmModule.forFeature([Wallet, Card, Transaction, Invest, Coords, CronOracle, MatchScore]),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

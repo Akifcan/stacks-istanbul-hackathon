@@ -28,6 +28,7 @@ import { Coords } from './entities/coords.entity';
 import { CronOracle } from './entities/cron-oracle';
 import { CreateCronOracleDto } from './dtos/create-cron-oracle.dto';
 import { UpdateCronOracleDto } from './dtos/update-cron-oracle.dto';
+import { MatchScore } from './entities/match-score.entity';
 
 @Injectable()
 export class AppService {
@@ -41,6 +42,7 @@ export class AppService {
   @InjectRepository(Invest) investRepository: Repository<Invest>
   @InjectRepository(Coords) cordsRepository: Repository<Coords>
   @InjectRepository(CronOracle) cronOracleRepository: Repository<CronOracle>
+  @InjectRepository(MatchScore) matchScoreRepository: Repository<MatchScore>
 
   async mockCoord() {
     await this.cordsRepository.deleteAll()
@@ -305,6 +307,22 @@ export class AppService {
   async createCronOracle(createCronOracleDto: CreateCronOracleDto) {
     const cronOracle = this.cronOracleRepository.create(createCronOracleDto);
     return await this.cronOracleRepository.save(cronOracle);
+  }
+
+  async mockScore() {
+    const score1 = Math.floor(Math.random() * 4);
+    const score2 = Math.floor(Math.random() * 4);
+
+    const existingScore = await this.matchScoreRepository.findOne({ where: {} });
+
+    if (existingScore) {
+      existingScore.score1 = score1;
+      existingScore.score2 = score2;
+      return await this.matchScoreRepository.save(existingScore);
+    }
+
+    const newScore = this.matchScoreRepository.create({ score1, score2 });
+    return await this.matchScoreRepository.save(newScore);
   }
 
 }
