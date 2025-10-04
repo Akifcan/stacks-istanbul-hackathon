@@ -8,6 +8,11 @@ export class AppController {
 
   @Inject() appService: AppService
 
+  @Get('mock-coords')
+  mockCoords(){
+    return this.appService.mockCoord()
+  }
+
   @Get('create-account')
   createAccount() {
     return this.appService.createAccount()

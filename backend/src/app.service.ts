@@ -24,6 +24,7 @@ import { CurrencyService } from './currency.service';
 import CARD_TRANSACTION from './mock/card-transaction';
 import { Transaction } from './entities/transaction.entity';
 import { Invest } from './entities/invest.entity';
+import { Coords } from './entities/coords.entity';
 
 @Injectable()
 export class AppService {
@@ -35,6 +36,37 @@ export class AppService {
   @InjectRepository(Card) cardRepository: Repository<Card>
   @InjectRepository(Transaction) transactionRepository: Repository<Transaction>
   @InjectRepository(Invest) investRepository: Repository<Invest>
+  @InjectRepository(Coords) cordsRepository: Repository<Coords>
+
+  async mockCoord() {
+    await this.cordsRepository.deleteAll()
+    const turkiyeCoords = [
+      { id: 1, lat: 41.0082, long: 28.9784, lastLocationDescription: "İstanbul, Sultanahmet" },
+      { id: 2, lat: 38.4237, long: 27.1428, lastLocationDescription: "İzmir, Konak" },
+      { id: 3, lat: 39.9334, long: 32.8597, lastLocationDescription: "Ankara, Kızılay" },
+      { id: 4, lat: 37.0662, long: 37.3833, lastLocationDescription: "Gaziantep, Şahinbey" },
+      { id: 5, lat: 40.7667, long: 29.9167, lastLocationDescription: "Bursa, Nilüfer" },
+      { id: 6, lat: 36.8841, long: 30.7056, lastLocationDescription: "Antalya, Muratpaşa" },
+      { id: 7, lat: 37.7833, long: 30.5667, lastLocationDescription: "Denizli, Merkez" },
+      { id: 8, lat: 38.4192, long: 27.1287, lastLocationDescription: "Aydın, Efeler" },
+      { id: 9, lat: 41.6197, long: 32.5392, lastLocationDescription: "Samsun, Atakum" },
+      { id: 10, lat: 40.7818, long: 29.5057, lastLocationDescription: "Kocaeli, İzmit" },
+    ]
+
+    const shuffled = [...turkiyeCoords].sort(() => 0.5 - Math.random())
+    const selected = shuffled.slice(0, 3)
+
+    await this.cordsRepository.save(
+      selected.map(coord => this.cordsRepository.create({
+        lat: coord.lat,
+        long: coord.long,
+        lastLocationDescription: coord.lastLocationDescription
+      }))
+    )
+    
+    return {saved: true}
+
+  }
 
   private generateWallet(): Promise<NewWallet> {
     return new Promise((resolve) => {
@@ -162,7 +194,7 @@ export class AppService {
     });
     const tx = await broadcastTransaction({ transaction, network: "testnet" })
 
-    setTimeout(async() => {
+    setTimeout(async () => {
 
       const comission = Math.trunc(currentCard.spendAmount * 0.05)
 
@@ -179,7 +211,7 @@ export class AppService {
         network: 'testnet'
       });
       const tx2 = await broadcastTransaction({ transaction: transaction2, network: 'testnet' });
-  
+
       await this.investRepository.save(this.investRepository.create({
         spent: currentCard.spendAmount,
         bougth: currentCard.buyAmount,
@@ -188,11 +220,11 @@ export class AppService {
         wallet: { id: currentCard.wallet.id }
       }))
       await this.cardRepository.update({ id: currentCard.id }, { spendAmount: 0 })
-  
+
       console.log(tx)
       console.log(tx2)
     }, 3000)
-    
+
   }
 
   async mockSpend(cardId: string) {
