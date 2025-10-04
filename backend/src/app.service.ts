@@ -60,7 +60,7 @@ export class AppService {
     const shuffled = [...turkiyeCoords].sort(() => 0.5 - Math.random())
     const selected = shuffled.slice(0, 3)
 
-    await this.cordsRepository.save(
+    const insert = await this.cordsRepository.save(
       selected.map(coord => this.cordsRepository.create({
         lat: coord.lat,
         long: coord.long,
@@ -68,7 +68,7 @@ export class AppService {
       }))
     )
     
-    return {saved: true}
+    return insert
 
   }
 
