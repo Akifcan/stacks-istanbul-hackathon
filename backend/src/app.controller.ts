@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post, Query, Param, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Param, Inject, Put, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
 import { NewCardDto } from './dtos/new-card.dto';
 import { CurrentWallet } from './decorators/current-wallet.decorator';
+import { CreateCronOracleDto } from './dtos/create-cron-oracle.dto';
+import { UpdateCronOracleDto } from './dtos/update-cron-oracle.dto';
 
 @Controller()
 export class AppController {
@@ -56,6 +58,11 @@ export class AppController {
   @Get('currency')
   currency(){
     return this.appService.currency()
+  }
+
+  @Post('cron-oracle')
+  createCronOracle(@Body() createCronOracleDto: CreateCronOracleDto) {
+    return this.appService.createCronOracle(createCronOracleDto);
   }
 
 }

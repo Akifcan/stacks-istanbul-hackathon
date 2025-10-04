@@ -12,11 +12,12 @@ import { CurrencyService } from './currency.service';
 import { Transaction } from './entities/transaction.entity';
 import { Invest } from './entities/invest.entity';
 import { Coords } from './entities/coords.entity';
+import { CronOracle } from './entities/cron-oracle';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([Wallet, Card, Transaction, Invest, Coords]),
+    TypeOrmModule.forFeature([Wallet, Card, Transaction, Invest, Coords, CronOracle]),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

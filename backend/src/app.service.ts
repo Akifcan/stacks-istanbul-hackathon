@@ -25,6 +25,9 @@ import CARD_TRANSACTION from './mock/card-transaction';
 import { Transaction } from './entities/transaction.entity';
 import { Invest } from './entities/invest.entity';
 import { Coords } from './entities/coords.entity';
+import { CronOracle } from './entities/cron-oracle';
+import { CreateCronOracleDto } from './dtos/create-cron-oracle.dto';
+import { UpdateCronOracleDto } from './dtos/update-cron-oracle.dto';
 
 @Injectable()
 export class AppService {
@@ -37,6 +40,7 @@ export class AppService {
   @InjectRepository(Transaction) transactionRepository: Repository<Transaction>
   @InjectRepository(Invest) investRepository: Repository<Invest>
   @InjectRepository(Coords) cordsRepository: Repository<Coords>
+  @InjectRepository(CronOracle) cronOracleRepository: Repository<CronOracle>
 
   async mockCoord() {
     await this.cordsRepository.deleteAll()
@@ -296,6 +300,11 @@ export class AppService {
       relations: ['card'],
       where: { wallet: { id: wallet.id } }
     })
+  }
+
+  async createCronOracle(createCronOracleDto: CreateCronOracleDto) {
+    const cronOracle = this.cronOracleRepository.create(createCronOracleDto);
+    return await this.cronOracleRepository.save(cronOracle);
   }
 
 }
