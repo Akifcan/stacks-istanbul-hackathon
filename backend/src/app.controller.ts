@@ -65,6 +65,11 @@ export class AppController {
     return this.appService.createCronOracle(createCronOracleDto);
   }
 
+  @Get('cron-oracle')
+  getCronOracles() {
+    return this.appService.getCronOracles();
+  }
+
   @Get('mock-score')
   mockScore() {
     return this.appService.mockScore();

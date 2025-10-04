@@ -309,6 +309,10 @@ export class AppService {
     return await this.cronOracleRepository.save(cronOracle);
   }
 
+  async getCronOracles() {
+    return await this.cronOracleRepository.find();
+  }
+
   async mockScore() {
     const score1 = Math.floor(Math.random() * 4);
     const score2 = Math.floor(Math.random() * 4);
